@@ -63,19 +63,7 @@ const KhaiwalCard = ({ section }) => {
           </Link>
         )}
 
-        <p className="text-center text-teal-50 text-base mb-1 mt-2 hindi-text">
-          Join our Telegram channel to get results quickly and receive superfast results
-        </p>
-        {telegramNumber && (
-          <Link
-            target="_blank"
-            href={`https://t.me/${telegramNumber}`}
-            className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-sky-600 to-teal-500 hover:from-sky-500 hover:to-teal-400 text-white px-8 py-3.5 rounded-full font-bold transition-all duration-300 hover:shadow-lg hover:shadow-teal-500/30 hover:scale-105 btn-glow"
-          >
-            <Image src="/telegram-icon.webp" alt="telegram" height={24} width={24} />
-            <span className="hindi-text">Telegram पर संपर्क करें</span>
-          </Link>
-        )}
+      
       </div>
     </div>
   );

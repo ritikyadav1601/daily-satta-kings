@@ -29,6 +29,14 @@ function sanitizeResults(results = []) {
     return results.map(sanitizeResult);
 }
 
+function normalizeResultData(data) {
+    return {
+        ...data,
+        game: data.game.toLowerCase().trim(),
+        waitingGame: data.waitingGame ? data.waitingGame.toLowerCase().trim() : "",
+    };
+}
+
 // Function to clean up data older than 2 years
 async function cleanupOldData() {
     try {
@@ -140,14 +148,10 @@ export async function POST(request) {
         }
 
         // Normalize data
-        const normalizedData = {
-            ...data,
-            game: data.game.toLowerCase().trim(),
-            waitingGame: data.waitingGame ? data.waitingGame.toLowerCase().trim() : "",
-        };
+        const normalizedData = normalizeResultData(data);
 
         const result = await Result.create(normalizedData);
-        return NextResponse.json(result, { status: 201 });
+        return NextResponse.json(sanitizeResult(result), { status: 201 });
     } catch (error) {
         console.error("Error creating result:", error);
         return NextResponse.json(

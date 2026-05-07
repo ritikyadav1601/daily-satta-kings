@@ -2,7 +2,7 @@
 const nextConfig = {
   images: {
     domains: ["i.ibb.co", 'cdn.prod.website-files.com'],
-    remotePatterns: [new URL("https://goodlucksatta.in/**")],
+    remotePatterns: [new URL("https://www.dailysattakings.com/**")],
   },
 };
 

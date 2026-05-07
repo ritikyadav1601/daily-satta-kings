@@ -120,14 +120,7 @@ const SattaDashboard = ({
           yesterdayResults={yesterdayResults}
         />
 
-        <section className="py-8 px-2 md:px-4">
-          <div className={`max-w-6xl mx-auto ${showSecondKhaiwalSection ? "grid grid-cols-1 lg:grid-cols-2 gap-6" : "max-w-md"}`}>
-            <KhaiwalCard section={khaiwalSection1} />
-            {showSecondKhaiwalSection && (
-              <KhaiwalCard section={khaiwalSection2} />
-            )}
-          </div>
-        </section>
+
 
 
         {/* Chart Grid */}
@@ -181,6 +174,18 @@ const SattaDashboard = ({
           </div>
         </div>
 
+        {/* Khaiwal Card */}
+        <section className="py-8 px-2 md:px-4">
+          <div className={`max-w-6xl mx-auto ${showSecondKhaiwalSection ? "grid grid-cols-1 lg:grid-cols-2 gap-6" : "max-w-md"}`}>
+            <KhaiwalCard section={khaiwalSection1} />
+            {showSecondKhaiwalSection && (
+              <KhaiwalCard section={khaiwalSection2} />
+            )}
+          </div>
+        </section>
+
+
+
         {/* Bottom Decorative */}
         <div className="py-8 flex justify-center">
           <div className="h-1 w-48 bg-gradient-to-r from-transparent via-teal-400 to-transparent rounded-full"></div>
@@ -188,21 +193,7 @@ const SattaDashboard = ({
 
         {/* FAQ Section */}
         <SimpleFAQ />
-        <div className="flex flex-col justify-center items-center mt-5 gap-2">
-          <p className="text-center text-teal-50 text-base mb-1 mt-2 hindi-text">
-            Join our Telegram channel to get results quickly and receive superfast results:
-          </p>
-          {telegramNumber && (
-            <Link
-              target="_blank"
-              href={`https://t.me/${telegramNumber}`}
-              className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-sky-600 to-teal-500 hover:from-sky-500 hover:to-teal-400 text-white px-8 py-3.5 rounded-full font-bold transition-all duration-300 hover:shadow-lg hover:shadow-teal-500/30 hover:scale-105 btn-glow"
-            >
-              <span><Image src='/telegram-icon.webp' height={24} width={24} /></span>
-              <span className="hindi-text">Telegram पर संपर्क करें</span>
-            </Link>
-          )}
-        </div>
+        
 
         {/* Footer Spacing */}
         <div className="py-8 flex justify-center">

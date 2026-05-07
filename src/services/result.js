@@ -1,12 +1,23 @@
 import { GAMES, GAME_KEYS } from "@/utils/gameConfig";
 
 // API Base URL
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || process.env.API_URL || 'https://www.dailysattakings.com'
+const DEFAULT_API_BASE =
+  process.env.NEXT_PUBLIC_API_URL ||
+  process.env.API_URL ||
+  "https://www.dailysattakings.com";
+
+function getApiBase() {
+  if (typeof window !== "undefined") {
+    return "";
+  }
+
+  return DEFAULT_API_BASE;
+}
 
 // ==================== SETTINGS ====================
 export async function getSettings() {
   try {
-    const response = await fetch(`${API_BASE}/api/settings`, {
+    const response = await fetch(`${getApiBase()}/api/settings`, {
       cache: "no-store",
     });
 
@@ -39,7 +50,7 @@ function getISTDate(daysOffset = 0) {
 
 export async function updateSettings(settings) {
   try {
-    const response = await fetch(`${API_BASE}/api/settings`, {
+    const response = await fetch(`${getApiBase()}/api/settings`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -64,7 +75,7 @@ export async function getTodayResult() {
   console.log('Fetching results for:', today); // Debug log
 
   try {
-    const response = await fetch(`${API_BASE}/api/results?type=today`, {
+    const response = await fetch(`${getApiBase()}/api/results?type=today`, {
       cache: 'no-store'
     });
     if (!response.ok) return [];
@@ -80,7 +91,7 @@ export async function getYesterdayResults() {
   console.log('Fetching yesterday results for:', yDate);
 
   try {
-    const response = await fetch(`${API_BASE}/api/results?type=yesterday`, {
+    const response = await fetch(`${getApiBase()}/api/results?type=yesterday`, {
       cache: 'no-store'
     });
     if (!response.ok) return [];
@@ -93,7 +104,7 @@ export async function getYesterdayResults() {
 
 export async function getLastResult() {
   try {
-    const response = await fetch(`${API_BASE}/api/results?type=last`);
+    const response = await fetch(`${getApiBase()}/api/results?type=last`);
     if (!response.ok) return null;
     return await response.json();
   } catch (error) {
@@ -104,7 +115,7 @@ export async function getLastResult() {
 
 export async function getDisawarData() {
   try {
-    const response = await fetch(`${API_BASE}/api/results?type=disawar`, {
+    const response = await fetch(`${getApiBase()}/api/results?type=disawar`, {
       cache: 'no-store'
     });
     if (!response.ok) return { today: null, yesterday: null };
@@ -118,7 +129,7 @@ export async function getDisawarData() {
 export async function getMonthlyResults(month, year) {
   try {
     const response = await fetch(
-      `${API_BASE}/api/results?month=${month}&year=${year}`,
+      `${getApiBase()}/api/results?month=${month}&year=${year}`,
       { cache: 'no-store' }
     );
     if (!response.ok) return [];
@@ -132,7 +143,7 @@ export async function getMonthlyResults(month, year) {
 export async function getYearlyResults(gameKey, year) {
   try {
     const response = await fetch(
-      `${API_BASE}/api/results?game=${gameKey}&year=${year}`,
+      `${getApiBase()}/api/results?game=${gameKey}&year=${year}`,
       { cache: 'no-store' }
     );
     if (!response.ok) return [];
@@ -146,7 +157,7 @@ export async function getYearlyResults(gameKey, year) {
 // ==================== ADMIN FUNCTIONS ====================
 export async function getAllResultsWithMeta() {
   try {
-    const response = await fetch(`${API_BASE}/api/results`);
+    const response = await fetch(`${getApiBase()}/api/results`);
     if (!response.ok) return [];
     return await response.json();
   } catch (error) {
@@ -157,7 +168,7 @@ export async function getAllResultsWithMeta() {
 
 export async function createResult(data) {
   try {
-    const response = await fetch(`${API_BASE}/api/results`, {
+    const response = await fetch(`${getApiBase()}/api/results`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -166,8 +177,19 @@ export async function createResult(data) {
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.errors?.[0] || 'Failed to create result');
+      const errorText = await response.text();
+      let errorMessage = 'Failed to create result';
+
+      try {
+        const errorData = JSON.parse(errorText);
+        errorMessage = errorData.errors?.[0] || errorData.error || errorMessage;
+      } catch {
+        if (errorText) {
+          errorMessage = errorText;
+        }
+      }
+
+      throw new Error(errorMessage);
     }
 
     return await response.json();
@@ -179,7 +201,7 @@ export async function createResult(data) {
 
 export async function updateResult(id, data) {
   try {
-    const response = await fetch(`${API_BASE}/api/results/${id}`, {
+    const response = await fetch(`${getApiBase()}/api/results/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -188,7 +210,19 @@ export async function updateResult(id, data) {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to update result');
+      const errorText = await response.text();
+      let errorMessage = 'Failed to update result';
+
+      try {
+        const errorData = JSON.parse(errorText);
+        errorMessage = errorData.errors?.[0] || errorData.error || errorMessage;
+      } catch {
+        if (errorText) {
+          errorMessage = errorText;
+        }
+      }
+
+      throw new Error(errorMessage);
     }
 
     return await response.json();
@@ -200,7 +234,7 @@ export async function updateResult(id, data) {
 
 export async function deleteResult(id) {
   try {
-    const response = await fetch(`${API_BASE}/api/results/${id}`, {
+    const response = await fetch(`${getApiBase()}/api/results/${id}`, {
       method: 'DELETE',
     });
 

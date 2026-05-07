@@ -11,61 +11,61 @@ const FAQPage = () => {
             id: 1,
             question: "What is Daily satta kings?",
             answer:
-                "Daily satta kings provides daily result updates, charts, and market information for listed satta markets.",
+                "Daily Satta Kings is an online platform that provides daily result updates, charts, and market-related information for various satta markets.",
         },
         {
             id: 2,
-            question: "How can I check today's Daily satta kings result?",
+            question: "What is Satta Disawar?",
             answer:
-                "You can check today's results on our website by visiting the home page or results section. Results are updated regularly as they are announced by different markets. You can also check specific market results from the chart section.",
+                "Satta Disawar is a type of number-based betting game where players guess numbers and place bets on different markets.",
         },
         {
             id: 3,
-            question: "What satta markets are available on this website?",
+            question: "How can I check today's result?",
             answer:
-                "We provide results and charts for SADAR BAZAR, GWALIOR, DELHI BAZAR, DELHI MATKA, SHRI GANESH, AGRA, FARIDABAD, ALWAR, GAZIABAD, DWARKA, GALI, and DISAWAR. Each market has its own declaration time during the day.",
+                "You can check today’s result directly on the homepage or in the results section. Results are updated regularly as soon as markets announce them.",
         },
         {
             id: 4,
-            question: "What are Daily satta kings record charts?",
+            question: "How often are results updated?",
             answer:
-                "Satta record charts display historical results from previous days, weeks, months, or even years. These charts help players analyze past numbers and trends. You can view detailed charts for each market to understand the history of numbers drawn.",
+                "Results are updated multiple times a day based on market timings to ensure users get the latest and accurate information.",
         },
         {
             id: 5,
-            question: "Can satta numbers be predicted?",
+            question: "What markets are available on the platform?",
             answer:
-                "Some people try to analyze old charts and patterns to predict numbers, but satta results are random. No prediction method can guarantee accurate results. The outcome depends on chance, and predictions are never guaranteed to be correct.",
+                "We provide results for markets like SADAR BAZAR, GWALIOR, DELHI BAZAR, DELHI MATKA, SHRI GANESH, AGRA, FARIDABAD, ALWAR, GHAZIABAD, DWARKA, GALI, and DISAWAR.",
         },
         {
             id: 6,
-            question: "Which Daily satta kings number is most likely to win?",
+            question: "What are record charts?",
             answer:
-                "There is no specific number that is more likely to win because results are completely random. Any number between 00 and 99 has an equal chance of being declared as the winning number in any draw.",
+                "Record charts show historical results from previous days, weeks, or months. They help users review past numbers and understand trends.",
         },
         {
             id: 7,
-            question: "How do I place a bet in Daily satta kings?",
+            question: "Can I check old results on this website?",
             answer:
-                "To place a bet, you need to contact our authorized agents or representatives. They will help you place your bet on your chosen market and number. Payment can be made through various methods including PAYTM, Bank Transfer, Phone Pay, and Google Pay.",
+                "Yes, you can easily access old results through charts and archive sections available on the website.",
         },
         {
             id: 8,
-            question: "What payment methods are accepted?",
+            question: "Can numbers be predicted in satta?",
             answer:
-                "We accept multiple payment methods including PAYTM, Bank Transfer, Phone Pay, Google Pay, and other digital payment options. All transactions are secure and verified. For payment details, contact our support team.",
+                "Some users analyze past data, but results are random. There is no guaranteed method for accurate prediction.",
         },
         {
             id: 9,
-            question: "Are winning payments guaranteed?",
+            question: "Is the website mobile-friendly?",
             answer:
-                "Yes, all winning payments are guaranteed and processed quickly. We maintain a 100% payment guarantee policy. Winners can verify payment proofs on our website, and all transactions are documented.",
+                "Yes, the website is fully mobile-friendly and works smoothly on all devices for easy access anytime.",
         },
         {
             id: 10,
-            question: "Is Daily satta kings legal?",
+            question: "What payment methods are accepted?",
             answer:
-                "Daily satta kings and related betting activities may be illegal in some regions of India. This website is purely informational and for entertainment purposes only. Users are responsible for complying with local laws and regulations in their area. Always check your local laws before participating.",
+                "We accept PAYTM, Bank Transfer, PhonePe, Google Pay, and other digital payment options for user convenience.",
         },
     ];
 
@@ -156,7 +156,17 @@ const FAQPage = () => {
                 <div className="mt-8 bg-red-500/10 rounded-xl border border-red-500/30 p-6">
                     <h3 className="text-lg font-bold text-red-400 mb-2">⚠️ Disclaimer</h3>
                     <p className="text-gray-300 text-sm">
-                        Daily satta kings and related activities may be illegal in some regions. This website is for informational and entertainment purposes only and does not promote or support gambling. Users are responsible for how they use the information provided and must comply with local laws and regulations.
+                        This website is created for informational and news publishing purposes only. All numbers and data displayed
+                        on this website are generated based on mathematical calculations, publicly available information, and artificial
+                        intelligence models, including zodiac-based interpretations.
+                        We do not promote, support, or have any association with gambling or betting activities. This website has no
+                        connection with any gambling platforms, agents, or operators. Any reference to results or numbers is purely for
+                        informational purposes.
+                        We strictly do not encourage any illegal activities such as gambling, money laundering, or any other unlawful
+                        practices. Users are advised to follow the laws and regulations applicable in their region.
+                        All content published on this website is collected from various internet sources and is presented for general
+                        informational use. We do not guarantee the accuracy or completeness of the information.
+                        This website operates independently and is supported through advertising services such as Google Ads.
                     </p>
                 </div>
             </div>
