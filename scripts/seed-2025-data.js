@@ -3,7 +3,11 @@
 
 require('dotenv').config({ path: '.env.local' });
 
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://kaushiksushil00_db_user:<db_password>@cluster0.fwvmjqn.mongodb.net/?appName=Cluster0";
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+    throw new Error('MONGODB_URI is missing. Add it to .env.local before running this seed script.');
+}
 
 const mongoose = require('mongoose');
 

@@ -1,6 +1,6 @@
 import Navbar from "@/components/common/Navbar";
 import TopProgressBar from "@/components/TopProgressBar";
-import { getSettings } from "@/services/result";
+import { buildSiteConfig, getSettingsFromDB } from "@/services/settingsServer";
 import Image from "next/image";
 import Link from "next/link";
 import "../globals.css";
@@ -11,8 +11,9 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  const setting = await getSettings();
+  const setting = buildSiteConfig(await getSettingsFromDB());
   const currentYear = new Date().getFullYear();
+  const whatsappNumber = setting?.khaiwalSection1?.whatsappNumber || setting?.site2_whatsappNumber;
 
   return (
     <div className="min-h-screen bg-main-gradient pattern-grid">
@@ -23,20 +24,22 @@ export default async function RootLayout({ children }) {
       </main>
 
       {/* WhatsApp Button with Glow */}
-      <Link
-        className="fixed bottom-6 right-6 hover:scale-110 transition-all duration-300 z-50 group"
-        target="_blank"
-        href={`https://wa.me/+91${setting?.khaiwalSection1?.whatsappNumber || setting?.site2_whatsappNumber}`}
-      >
-        <div className="absolute inset-0 bg-green-500 rounded-full blur-xl opacity-50 group-hover:opacity-80 transition-opacity"></div>
-        <Image
-          className="max-sm:!size-14 relative z-10"
-          width={70}
-          height={70}
-          src="https://i.ibb.co/x8fsyXVj/Whats-App-svg.webp"
-          alt="whatsapp"
-        />
-      </Link>
+      {whatsappNumber && (
+        <Link
+          className="fixed bottom-6 right-6 hover:scale-110 transition-all duration-300 z-50 group"
+          target="_blank"
+          href={`https://wa.me/+91${whatsappNumber}`}
+        >
+          <div className="absolute inset-0 bg-green-500 rounded-full blur-xl opacity-50 group-hover:opacity-80 transition-opacity"></div>
+          <Image
+            className="max-sm:!size-14 relative z-10"
+            width={70}
+            height={70}
+            src="https://i.ibb.co/x8fsyXVj/Whats-App-svg.webp"
+            alt="whatsapp"
+          />
+        </Link>
+      )}
 
       {/* Footer */}
       <footer className="mt-8 relative overflow-hidden">
@@ -91,7 +94,17 @@ export default async function RootLayout({ children }) {
             {/* English Disclaimer */}
             <p className="text-center text-amber-300 font-bold text-base mb-3">ⓘ Disclaimer:</p>
             <p className="text-center text-slate-300 text-xs sm:text-sm leading-relaxed mb-4">
-              This Is A News Publishing Website. All The Numbers Shown In The Website Are Based On Arithmetic And Artificial Intelligence And Are Displayed On The Basis Of Zodiac Sign. This Website Has No Connection Of Any Kind With Any Gambling Establishment. The Website Has No Connection Whatsoever With Any Illegal Activity Such As Gambling, Money Laundering Or Any Other Activity. This Website Is Completely Depends On Google Ad Revenue, All The Information Which Is Being Displayed On This Website Is Taken From Internet Sources.
+            This website is created for informational and news publishing purposes only. All numbers and data displayed
+on this website are generated based on mathematical calculations, publicly available information, and artificial
+intelligence models, including zodiac-based interpretations.
+We do not promote, support, or have any association with gambling or betting activities. This website has no
+connection with any gambling platforms, agents, or operators. Any reference to results or numbers is purely for
+informational purposes.
+We strictly do not encourage any illegal activities such as gambling, money laundering, or any other unlawful
+practices. Users are advised to follow the laws and regulations applicable in their region.
+All content published on this website is collected from various internet sources and is presented for general
+informational use. We do not guarantee the accuracy or completeness of the information.
+This website operates independently and is supported through advertising services such as Google Ads.
             </p>
 
             <div className="h-px w-full bg-teal-400/35 my-4"></div>
@@ -99,7 +112,11 @@ export default async function RootLayout({ children }) {
             {/* Hindi Disclaimer */}
             <p className="text-center text-amber-300 font-bold text-base mb-3 hindi-text">ⓘ अस्वीकरण:</p>
             <p className="text-center text-slate-300 text-xs sm:text-sm leading-relaxed hindi-text">
-              यह एक समाचार प्रकाशन वेबसाइट है। वेबसाइट में दिखाए गए सभी नंबर अंकगणित और आर्टिफिशियल इंटेलिजेंस (एआई) पर आधारित हैं और राशि चक्र के आधार पर प्रदर्शित किए गए हैं। इस वेबसाइट का किसी भी जुआ प्रतिष्ठान से किसी भी प्रकार का कोई संबंध नहीं है। वेबसाइट का किसी भी अवैध गतिविधि जैसे जुआ, मनी लॉन्ड्रिंग या किसी अन्य गतिविधि से कोई संबंध नहीं है। यह वेबसाइट पूरी तरह से गूगल ऐड रेवेन्यू पर आश्रित है, इस वेबसाइट पर प्रदर्शित होने वाली सभी जानकारी इंटरनेट स्रोतों से ली गई है।
+            यह वेबसाइट केवल सूचना और समाचार प्रकाशित करने के उद्देश्य से बनाई गई है। इस वेबसाइट पर प्रदर्शित सभी नंबर और डेटा गणितीय गणनाओं, सार्वजनिक रूप से उपलब्ध जानकारी, तथा कृत्रिम बुद्धिमत्ता (Artificial Intelligence) मॉडल और राशि आधारित व्याख्याओं के आधार पर तैयार किए गए हैं।
+हम किसी भी प्रकार की सट्टेबाजी या जुए की गतिविधियों को बढ़ावा नहीं देते, न ही उनका समर्थन करते हैं। इस वेबसाइट का किसी भी जुआ, बेटिंग प्लेटफॉर्म, एजेंट या ऑपरेटर से कोई संबंध नहीं है। यहां प्रदर्शित किसी भी प्रकार के रिजल्ट या नंबर केवल सामान्य जानकारी प्रदान करने के उद्देश्य से साझा किए जाते हैं।
+हम किसी भी अवैध गतिविधि जैसे जुआ, मनी लॉन्ड्रिंग या अन्य गैरकानूनी कार्यों को प्रोत्साहित नहीं करते हैं। उपयोगकर्ताओं को सलाह दी जाती है कि वे अपने क्षेत्र में लागू सभी कानूनों और नियमों का पालन करें।
+इस वेबसाइट पर प्रकाशित सभी सामग्री विभिन्न इंटरनेट स्रोतों से एकत्रित की गई है और केवल सामान्य जानकारी के उद्देश्य से प्रस्तुत की गई है। हम यहां उपलब्ध जानकारी की पूर्ण सटीकता या संपूर्णता की कोई गारंटी नहीं देते हैं।
+यह वेबसाइट स्वतंत्र रूप से संचालित की जाती है और Google Ads जैसी विज्ञापन सेवाओं के माध्यम से समर्थित है।
             </p>
           </div>
 

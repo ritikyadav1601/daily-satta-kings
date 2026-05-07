@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const mongoUri = process.env.MONGODB_URI || "mongodb+srv://kaushiksushil00_db_user:<db_password>@cluster0.fwvmjqn.mongodb.net/?appName=Cluster0";
+const mongoUri = process.env.MONGODB_URI;
 
 let cached = global.mongoose;
 
@@ -9,19 +9,24 @@ if (!cached) {
 }
 
 export async function connectDB() {
+    if (!mongoUri) {
+        throw new Error("MONGODB_URI is missing. Add it to .env.local before starting the app.");
+    }
+
     if (cached.conn) {
-        return cached.conn;
+        return true;
     }
 
     if (!cached.promise) {
         const opts = {
             bufferCommands: false,
+            serverSelectionTimeoutMS: 10000,
         };
 
         cached.promise = mongoose
             .connect(mongoUri, opts)
-            .then((mongoose) => {
-                return mongoose;
+            .then(() => {
+                return true;
             });
     }
 
@@ -32,5 +37,5 @@ export async function connectDB() {
         throw e;
     }
 
-    return cached.conn;
+    return true;
 }

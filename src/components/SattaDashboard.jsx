@@ -3,6 +3,7 @@ import { DEFAULT_GAME_SCHEDULE, GAMES } from "@/utils/gameConfig";
 import { Typewriter } from "react-simple-typewriter";
 import GameSection from "./GameSection";
 import KhaiwalCard from "./KhaiwalCard";
+import InformationalContent from "./InformationalContent";
 import SattaResultTable from "./SattaResultTable";
 import SimpleFAQ from "./SimpleFAQ";
 import Link from "next/link";
@@ -184,7 +185,7 @@ const SattaDashboard = ({
           </div>
         </section>
 
-
+        <InformationalContent />
 
         {/* Bottom Decorative */}
         <div className="py-8 flex justify-center">

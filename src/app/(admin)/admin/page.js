@@ -363,20 +363,6 @@ const AdminDashboard = () => {
                 <Settings size={16} className="mr-1 lg:mr-2" />
                 Daily satta kings Config
               </Link>
-              <Link
-                href="/admin/goodluck-config"
-                className="flex items-center text-black/80 hover:text-black px-2 lg:px-3 py-2 rounded-lg hover:bg-black/10 transition-colors text-xs lg:text-base whitespace-nowrap"
-              >
-                <Settings size={16} className="mr-1 lg:mr-2" />
-                Good Luck Config
-              </Link>
-              <Link
-                href="/admin/t1-config"
-                className="flex items-center text-black/80 hover:text-black px-2 lg:px-3 py-2 rounded-lg hover:bg-black/10 transition-colors text-xs lg:text-base whitespace-nowrap"
-              >
-                <Settings size={16} className="mr-1 lg:mr-2" />
-                T1 Config
-              </Link>
               <button
                 onClick={logout}
                 className="flex items-center text-black/80 hover:text-black px-2 lg:px-3 py-2 rounded-lg hover:bg-black/10 transition-colors text-xs lg:text-base whitespace-nowrap"
@@ -420,22 +406,6 @@ const AdminDashboard = () => {
               >
                 <Settings size={18} className="mr-3" />
                 Daily satta kings Config
-              </Link>
-              <Link
-                href="/admin/goodluck-config"
-                className="flex items-center text-black/80 hover:text-black px-3 py-3 rounded-lg hover:bg-black/10 transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <Settings size={18} className="mr-3" />
-                Good Luck Config
-              </Link>
-              <Link
-                href="/admin/t1-config"
-                className="flex items-center text-black/80 hover:text-black px-3 py-3 rounded-lg hover:bg-black/10 transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <Settings size={18} className="mr-3" />
-                T1 Config
               </Link>
               <button
                 onClick={() => {
@@ -888,22 +858,6 @@ const AdminDashboard = () => {
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
             >
               Daily satta kings
-            </a>
-            <a
-              href="https://www.goodlucksatta.in/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
-            >
-              Good Luck
-            </a>
-            <a
-              href="https://www.t1-satta.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
-            >
-              T1 Play
             </a>
           </div>
         </div>

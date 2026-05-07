@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { ArrowLeft, Settings as SettingsIcon, LogOut } from "lucide-react";
 
-const AdminNavbar = ({ title = "Site Configuration", subtitle = "Manage Good Luck and T1 site settings", backHref = "/admin" }) => {
+const AdminNavbar = ({ title = "Site Configuration", subtitle = "Manage site settings", backHref = "/admin" }) => {
     return (
         <header className="bg-white backdrop-blur-lg border-b border-black/20 sticky top-0 z-50">
             <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
@@ -27,14 +27,6 @@ const AdminNavbar = ({ title = "Site Configuration", subtitle = "Manage Good Luc
                         <Link href="/admin/payment-proofs" className="flex items-center text-black/80 hover:text-black px-3 py-2 rounded-lg hover:bg-black/10 transition-colors text-sm lg:text-base whitespace-nowrap">
                             <span className="mr-1 lg:mr-2">💳</span>
                             <span>Payment Proofs</span>
-                        </Link>
-                        <Link href="/admin/goodluck-config" className="flex items-center text-black/80 hover:text-black px-3 py-2 rounded-lg hover:bg-black/10 transition-colors text-sm lg:text-base whitespace-nowrap">
-                            <SettingsIcon size={16} className="mr-1 lg:mr-2" />
-                            Good Luck Config
-                        </Link>
-                        <Link href="/admin/t1-config" className="flex items-center text-black/80 hover:text-black px-3 py-2 rounded-lg hover:bg-black/10 transition-colors text-sm lg:text-base whitespace-nowrap">
-                            <SettingsIcon size={16} className="mr-1 lg:mr-2" />
-                            T1 Config
                         </Link>
                         <button
                             onClick={() => {
