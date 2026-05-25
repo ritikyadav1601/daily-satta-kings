@@ -94,17 +94,17 @@ export default async function RootLayout({ children }) {
             {/* English Disclaimer */}
             <p className="text-center text-amber-300 font-bold text-base mb-3">ⓘ Disclaimer:</p>
             <p className="text-center text-slate-300 text-xs sm:text-sm leading-relaxed mb-4">
-            This website is created for informational and news publishing purposes only. All numbers and data displayed
-on this website are generated based on mathematical calculations, publicly available information, and artificial
-intelligence models, including zodiac-based interpretations.
-We do not promote, support, or have any association with gambling or betting activities. This website has no
-connection with any gambling platforms, agents, or operators. Any reference to results or numbers is purely for
-informational purposes.
-We strictly do not encourage any illegal activities such as gambling, money laundering, or any other unlawful
-practices. Users are advised to follow the laws and regulations applicable in their region.
-All content published on this website is collected from various internet sources and is presented for general
-informational use. We do not guarantee the accuracy or completeness of the information.
-This website operates independently and is supported through advertising services such as Google Ads.
+              This website is created for informational and news publishing purposes only. All numbers and data displayed
+              on this website are generated based on mathematical calculations, publicly available information, and artificial
+              intelligence models, including zodiac-based interpretations.
+              We do not promote, support, or have any association with gambling or betting activities. This website has no
+              connection with any gambling platforms, agents, or operators. Any reference to results or numbers is purely for
+              informational purposes.
+              We strictly do not encourage any illegal activities such as gambling, money laundering, or any other unlawful
+              practices. Users are advised to follow the laws and regulations applicable in their region.
+              All content published on this website is collected from various internet sources and is presented for general
+              informational use. We do not guarantee the accuracy or completeness of the information.
+              This website operates independently and is supported through advertising services such as Google Ads.
             </p>
 
             <div className="h-px w-full bg-teal-400/35 my-4"></div>
@@ -112,11 +112,11 @@ This website operates independently and is supported through advertising service
             {/* Hindi Disclaimer */}
             <p className="text-center text-amber-300 font-bold text-base mb-3 hindi-text">ⓘ अस्वीकरण:</p>
             <p className="text-center text-slate-300 text-xs sm:text-sm leading-relaxed hindi-text">
-            यह वेबसाइट केवल सूचना और समाचार प्रकाशित करने के उद्देश्य से बनाई गई है। इस वेबसाइट पर प्रदर्शित सभी नंबर और डेटा गणितीय गणनाओं, सार्वजनिक रूप से उपलब्ध जानकारी, तथा कृत्रिम बुद्धिमत्ता (Artificial Intelligence) मॉडल और राशि आधारित व्याख्याओं के आधार पर तैयार किए गए हैं।
-हम किसी भी प्रकार की सट्टेबाजी या जुए की गतिविधियों को बढ़ावा नहीं देते, न ही उनका समर्थन करते हैं। इस वेबसाइट का किसी भी जुआ, बेटिंग प्लेटफॉर्म, एजेंट या ऑपरेटर से कोई संबंध नहीं है। यहां प्रदर्शित किसी भी प्रकार के रिजल्ट या नंबर केवल सामान्य जानकारी प्रदान करने के उद्देश्य से साझा किए जाते हैं।
-हम किसी भी अवैध गतिविधि जैसे जुआ, मनी लॉन्ड्रिंग या अन्य गैरकानूनी कार्यों को प्रोत्साहित नहीं करते हैं। उपयोगकर्ताओं को सलाह दी जाती है कि वे अपने क्षेत्र में लागू सभी कानूनों और नियमों का पालन करें।
-इस वेबसाइट पर प्रकाशित सभी सामग्री विभिन्न इंटरनेट स्रोतों से एकत्रित की गई है और केवल सामान्य जानकारी के उद्देश्य से प्रस्तुत की गई है। हम यहां उपलब्ध जानकारी की पूर्ण सटीकता या संपूर्णता की कोई गारंटी नहीं देते हैं।
-यह वेबसाइट स्वतंत्र रूप से संचालित की जाती है और Google Ads जैसी विज्ञापन सेवाओं के माध्यम से समर्थित है।
+              यह वेबसाइट केवल सूचना और समाचार प्रकाशित करने के उद्देश्य से बनाई गई है। इस वेबसाइट पर प्रदर्शित सभी नंबर और डेटा गणितीय गणनाओं, सार्वजनिक रूप से उपलब्ध जानकारी, तथा कृत्रिम बुद्धिमत्ता (Artificial Intelligence) मॉडल और राशि आधारित व्याख्याओं के आधार पर तैयार किए गए हैं।
+              हम किसी भी प्रकार की सट्टेबाजी या जुए की गतिविधियों को बढ़ावा नहीं देते, न ही उनका समर्थन करते हैं। इस वेबसाइट का किसी भी जुआ, बेटिंग प्लेटफॉर्म, एजेंट या ऑपरेटर से कोई संबंध नहीं है। यहां प्रदर्शित किसी भी प्रकार के रिजल्ट या नंबर केवल सामान्य जानकारी प्रदान करने के उद्देश्य से साझा किए जाते हैं।
+              हम किसी भी अवैध गतिविधि जैसे जुआ, मनी लॉन्ड्रिंग या अन्य गैरकानूनी कार्यों को प्रोत्साहित नहीं करते हैं। उपयोगकर्ताओं को सलाह दी जाती है कि वे अपने क्षेत्र में लागू सभी कानूनों और नियमों का पालन करें।
+              इस वेबसाइट पर प्रकाशित सभी सामग्री विभिन्न इंटरनेट स्रोतों से एकत्रित की गई है और केवल सामान्य जानकारी के उद्देश्य से प्रस्तुत की गई है। हम यहां उपलब्ध जानकारी की पूर्ण सटीकता या संपूर्णता की कोई गारंटी नहीं देते हैं।
+              यह वेबसाइट स्वतंत्र रूप से संचालित की जाती है और Google Ads जैसी विज्ञापन सेवाओं के माध्यम से समर्थित है।
             </p>
           </div>
 

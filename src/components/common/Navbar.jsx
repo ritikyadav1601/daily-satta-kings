@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
 
 const Navbar = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -72,8 +71,8 @@ const Navbar = () => {
             <div className="flex items-center justify-between h-14 sm:h-16">
               {/* Logo */}
               <Link href="/" className="flex items-center gap-1.5 sm:gap-2 group flex-shrink-0">
-                <div className="w-10 h-10 sm:w-12 sm:h-12">
-                  <Image src="/logo.png" alt="Daily satta kings Logo" width={50} height={50} />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-amber-300 via-white to-teal-300 border border-amber-200/70 shadow-lg shadow-teal-500/20 flex items-center justify-center">
+                  <span className="text-slate-950 font-black text-xl sm:text-2xl leading-none">K♠</span>
                 </div>
                 <div className="hidden sm:block">
                   <h1 className="text-sm sm:text-lg font-black text-white leading-none">DAILY SATTA KINGS</h1>

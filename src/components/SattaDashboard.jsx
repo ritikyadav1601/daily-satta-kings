@@ -1,6 +1,5 @@
 "use client";
 import { DEFAULT_GAME_SCHEDULE, GAMES } from "@/utils/gameConfig";
-import { Typewriter } from "react-simple-typewriter";
 import GameSection from "./GameSection";
 import KhaiwalCard from "./KhaiwalCard";
 import InformationalContent from "./InformationalContent";
@@ -86,17 +85,6 @@ const SattaDashboard = ({
       <div className="mx-auto">
         {/* Current Featured Game */}
         <div className="text-center">
-          <div className="bg-gradient-to-r from-teal-700 via-teal-600 to-sky-700 py-4">
-            <p className="text-xl md:text-2xl font-bold text-white hindi-text">
-              <Typewriter
-                words={["ईमानदारी ही हमारी पहचान है।"]}
-                cursor
-                cursorBlinking={false}
-                cursorStyle=""
-                typeSpeed={80}
-              />
-            </p>
-          </div>
           <div className="bg-gradient-to-r from-amber-400 via-yellow-300 to-teal-300 py-5 shadow-lg shadow-teal-500/20">
             <h2 className="text-3xl px-3 lg:text-4xl text-slate-950 font-black tracking-tight">
               {displaySiteName}

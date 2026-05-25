@@ -1,5 +1,4 @@
 "use client";
-import { Typewriter } from "react-simple-typewriter";
 import Link from "next/link";
 import React from "react";
 
@@ -7,19 +6,6 @@ const Contact = ({ setting }) => {
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
       <div className="flex flex-col justify-center items-center">
-        {/* Header Card */}
-        <div className="bg-gradient-to-r from-teal-700 via-slate-900 to-sky-700 rounded-lg p-5 mb-6 w-full text-center">
-          <h1 className="text-xl md:text-2xl font-semibold text-white">
-            <Typewriter
-              words={["ईमानदारी ही हमारी पहचान है।"]}
-              cursor
-              cursorBlinking={false}
-              cursorStyle=""
-              typeSpeed={80}
-            />
-          </h1>
-        </div>
-
         {/* Site Name */}
         <div className="bg-amber-500 rounded-lg w-full text-center py-6 mb-6">
           <h2 className="text-3xl lg:text-4xl text-white font-bold">

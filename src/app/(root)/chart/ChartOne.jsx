@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { Typewriter } from "react-simple-typewriter";
 import { GAMES } from "@/utils/gameConfig";
 
 const ChartSattaTable = () => {
@@ -20,19 +19,6 @@ const ChartSattaTable = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-3 md:px-4 pb-8 mt-4">
-      {/* Header Card */}
-      <div className="bg-gradient-to-r from-teal-700 via-slate-900 to-sky-700 rounded-xl p-6 mb-8 text-center border border-teal-400/20">
-        <p className="text-xl md:text-2xl font-bold text-white hindi-text">
-          <Typewriter
-            words={["ईमानदारी ही हमारी पहचान है।"]}
-            cursor
-            cursorBlinking={false}
-            cursorStyle=""
-            typeSpeed={80}
-          />
-        </p>
-      </div>
-
       {/* Page Title */}
       <div className="text-center mb-6">
         <h1 className="text-2xl md:text-3xl font-bold text-teal-300">
