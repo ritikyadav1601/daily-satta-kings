@@ -5,8 +5,12 @@ export const metadata = {
   description: "Check Daily Satta Kings for today satta result, latest satta king chart, and A7 satta updates. Get fast, clear, and updated satta king information in one place.",
   icons: {
     icon: "/favicon.ico",
-  },
-  viewport: { width: "device-width", initialScale: 1 }
+  }
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default async function RootLayout({ children }) {
