@@ -1,8 +1,0 @@
-{
-  "crons": [
-    {
-      "path": "/api/sync/a7?days=3",
-      "schedule": "*/15 * * * *"
-    }
-  ]
-}
