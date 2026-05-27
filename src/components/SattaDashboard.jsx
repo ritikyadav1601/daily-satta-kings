@@ -35,6 +35,41 @@ const SattaDashboard = ({
   // Get current day of the month
   const currentDay = currentDate.getDate();
   const telegramNumber = "123456789";
+  const monthlyChartGames = GAMES.map((game) => {
+    const shortNames = {
+      "sadar-bazar": "SADAR",
+      gwalior: "GWAL",
+      "delhi-bazar": "DELHI",
+      "delhi-matka": "MATKA",
+      "shri-ganesh": "GANESH",
+      agra: "AGRA",
+      faridabad: "FBD",
+      alwar: "ALWAR",
+      gaziabad: "GZB",
+      dwarka: "DWK",
+      gali: "GALI",
+      disawer: "DESAWER",
+    };
+
+    return {
+      ...game,
+      shortName: shortNames[game.key] || game.name,
+    };
+  });
+  const mainMonthlyGameKeys = [
+    "disawer",
+    "delhi-bazar",
+    "shri-ganesh",
+    "faridabad",
+    "gaziabad",
+    "gali",
+  ];
+  const mainMonthlyGames = mainMonthlyGameKeys
+    .map((key) => monthlyChartGames.find((game) => game.key === key))
+    .filter(Boolean);
+  const remainingMonthlyGames = monthlyChartGames.filter(
+    (game) => !mainMonthlyGameKeys.includes(game.key)
+  );
 
   // Create monthly chart data using centralized config
   const createMonthlyChart = () => {
@@ -46,12 +81,12 @@ const SattaDashboard = ({
       const row = { day };
       const dayStr = `${currentYear}-${monthStr}-${String(day).padStart(2, "0")}`;
 
-      GAMES.forEach((game, index) => {
+      monthlyChartGames.forEach((game) => {
         // Find result for this specific date and game
         const result = monthlyResults.find(
           (r) => r.date === dayStr && r.game === game.key
         );
-        row[`game${index}`] = result ? result.resultNumber : "--";
+        row[game.key] = result ? result.resultNumber : "--";
       });
 
       rows.push(row);
@@ -78,6 +113,88 @@ const SattaDashboard = ({
   };
 
   const showSecondKhaiwalSection = khaiwalSection2?.enabled && khaiwalSection2?.contactName;
+  const renderMonthlyTable = (games) => (
+    <div className="bg-slate-950 shadow-sm border-x border-b border-teal-400/20">
+      <table className="w-full table-fixed border-collapse">
+        <thead>
+          <tr className="bg-slate-900">
+            <th className="w-8 sm:w-12 border border-teal-400/20 px-1 py-2 text-amber-300 text-[10px] sm:text-sm font-bold">
+              No
+            </th>
+            {games.map((game) => (
+              <th
+                key={game.key}
+                className="border border-teal-400/20 px-0.5 sm:px-2 py-2 text-slate-200 text-[9px] sm:text-xs font-semibold leading-tight"
+              >
+                {game.shortName}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {monthlyChartData.map((row, rowIndex) => (
+            <tr
+              key={`mobile-chart-${row.day}`}
+              className="hover:bg-teal-900/30 transition-colors duration-200 bg-slate-900/60"
+            >
+              <td className="border border-teal-400/20 px-1 py-2 text-center text-amber-300 text-[10px] sm:text-sm font-bold">
+                {rowIndex + 1}
+              </td>
+              {games.map((game) => (
+                <td
+                  key={game.key}
+                  className="border border-teal-400/20 px-0.5 sm:px-2 py-2 text-center text-teal-200 text-[10px] sm:text-sm font-medium"
+                >
+                  {row[game.key]}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+  const renderDesktopMonthlyTable = () => (
+    <div className="overflow-x-auto bg-slate-950 rounded-b-2xl shadow-sm border border-teal-400/20">
+      <table className="w-full border-collapse">
+        <thead>
+          <tr className="bg-slate-900">
+            <th className="border border-teal-400/20 px-3 py-3 text-amber-300 text-sm font-bold sticky left-0 bg-slate-900 z-10">
+              S.No
+            </th>
+            {GAMES.map((game, index) => (
+              <th
+                key={index}
+                className="border border-teal-400/20 px-3 py-3 text-slate-200 text-xs font-semibold whitespace-nowrap"
+              >
+                {game.name}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {monthlyChartData.map((row, rowIndex) => (
+            <tr
+              key={`desktop-chart-${row.day}`}
+              className="hover:bg-teal-900/30 transition-colors duration-200 bg-slate-900/60"
+            >
+              <td className="border border-teal-400/20 px-3 py-2.5 text-center text-amber-300 text-sm font-bold sticky left-0 bg-slate-900 z-10">
+                {rowIndex + 1}
+              </td>
+              {GAMES.map((game) => (
+                <td
+                  key={game.key}
+                  className="border border-teal-400/20 px-3 py-2.5 hover:bg-teal-900/35 transition-colors text-center text-teal-200 text-sm font-medium"
+                >
+                  {row[game.key]}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-transparent">
@@ -122,44 +239,13 @@ const SattaDashboard = ({
             </h2>
           </div>
 
-          <div className="overflow-x-auto bg-slate-950 rounded-b-2xl shadow-sm border border-teal-400/20">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="bg-slate-900">
-                  <th className="border border-teal-400/20 px-3 py-3 text-amber-300 text-sm font-bold sticky left-0 bg-slate-900 z-10">
-                    S.No
-                  </th>
-                  {GAMES.map((game, index) => (
-                    <th
-                      key={index}
-                      className="border border-teal-400/20 px-3 py-3 text-slate-200 text-xs font-semibold whitespace-nowrap"
-                    >
-                      {game.name}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {monthlyChartData.map((row, rowIndex) => (
-                  <tr
-                    key={rowIndex}
-                    className="hover:bg-teal-900/30 transition-colors duration-200 bg-slate-900/60"
-                  >
-                    <td className="border border-teal-400/20 px-3 py-2.5 text-center text-amber-300 text-sm font-bold sticky left-0 bg-slate-900 z-10">
-                      {rowIndex + 1}
-                    </td>
-                    {GAMES.map((_, gameIndex) => (
-                      <td
-                        key={gameIndex}
-                        className="border border-teal-400/20 px-3 py-2.5 hover:bg-teal-900/35 transition-colors text-center text-teal-200 text-sm font-medium"
-                      >
-                        {row[`game${gameIndex}`]}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="md:hidden rounded-b-2xl overflow-hidden">
+            {renderMonthlyTable(mainMonthlyGames)}
+            {renderMonthlyTable(remainingMonthlyGames)}
+          </div>
+
+          <div className="hidden md:block">
+            {renderDesktopMonthlyTable()}
           </div>
         </div>
 
@@ -175,17 +261,12 @@ const SattaDashboard = ({
 
         <InformationalContent />
 
-        {/* Bottom Decorative */}
-        <div className="py-8 flex justify-center">
-          <div className="h-1 w-48 bg-gradient-to-r from-transparent via-teal-400 to-transparent rounded-full"></div>
-        </div>
-
         {/* FAQ Section */}
         <SimpleFAQ />
         
 
         {/* Footer Spacing */}
-        <div className="py-8 flex justify-center">
+        <div className="py-3 md:py-8 flex justify-center">
           <div className="h-1 w-48 bg-gradient-to-r from-transparent via-amber-300 to-transparent rounded-full"></div>
         </div>
       </div>

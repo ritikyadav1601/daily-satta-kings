@@ -103,10 +103,10 @@ const contentSections = [
 
 const InformationalContent = () => {
   return (
-    <section className="px-2 md:px-4 pb-8">
+    <section className="px-2 md:px-4 pb-2">
       <div className="max-w-6xl mx-auto bg-slate-950/85 border border-teal-400/20 rounded-2xl overflow-hidden shadow-xl">
 
-        <div className="border-t border-teal-400/15 px-4 sm:px-6 py-6 space-y-7">
+        <div className="border-t border-teal-400/15 px-4 sm:px-6 pt-6 pb-2 space-y-7">
           {contentSections.map((section) => (
             <article key={section.title} className="space-y-3">
               <h2 className="text-lg sm:text-xl font-black text-teal-200">

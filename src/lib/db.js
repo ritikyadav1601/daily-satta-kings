@@ -24,7 +24,7 @@ export async function connectDB() {
         };
 
         cached.promise = mongoose
-            .connect(mongoUri, opts)
+            .connect(getMongoUri(), opts)
             .then(() => {
                 return true;
             });
@@ -38,4 +38,29 @@ export async function connectDB() {
     }
 
     return true;
+}
+
+function getMongoUri() {
+    const match = mongoUri.match(/^(mongodb(?:\+srv)?:\/\/)([^@]+)(@.+)$/);
+
+    if (!match) {
+        return mongoUri;
+    }
+
+    const [, protocol, userInfo, rest] = match;
+    const parts = userInfo.split(":");
+
+    if (parts.length < 2) {
+        return mongoUri;
+    }
+
+    const username = parts.shift();
+    const password = parts.join(":");
+
+    try {
+        decodeURIComponent(password);
+        return mongoUri;
+    } catch {
+        return `${protocol}${username}:${password.replace(/%/g, "%25")}${rest}`;
+    }
 }

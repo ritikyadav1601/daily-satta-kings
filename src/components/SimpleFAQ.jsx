@@ -47,8 +47,8 @@ const SimpleFAQ = () => {
     ];
 
     return (
-        <div className="mt-12 px-2 md:px-4">
-            <div className="bg-gradient-to-r from-teal-700 via-slate-900 to-sky-700 rounded-t-2xl py-5 text-center">
+        <div className="mt-1 px-2 md:px-4">
+            <div className="bg-gradient-to-r from-teal-700 via-slate-900 to-sky-700 rounded-t-2xl py-4 text-center">
                 <h2 className="text-xl sm:text-2xl lg:text-3xl text-white font-bold">
                     ❓ Frequently Asked Questions
                 </h2>
