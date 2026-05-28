@@ -45,6 +45,8 @@ const Navbar = () => {
     { id: 3, title: "Payment Proof", href: "/payment-proofs", icon: "💳" },
     { id: 4, title: "Contact", href: "/contact", icon: "📞" },
   ];
+  const mobileMenuLinks = sattaLinks.filter((link) => link.href !== "/payment-proofs");
+  const paymentProofLink = sattaLinks.find((link) => link.href === "/payment-proofs");
 
   const isActive = (href) => {
     if (href === "/") return pathname === "/";
@@ -72,7 +74,7 @@ const Navbar = () => {
               {/* Logo */}
               <Link href="/" className="flex items-center gap-1.5 sm:gap-2 group flex-shrink-0">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-amber-300 via-white to-teal-300 border border-amber-200/70 shadow-lg shadow-teal-500/20 flex items-center justify-center">
-                  <span className="text-slate-950 font-black text-xl sm:text-2xl leading-none">K♠</span>
+                  <span className="text-slate-950 font-black text-2xl sm:text-3xl leading-none">♠</span>
                 </div>
                 <div className="hidden sm:block">
                   <h1 className="text-sm sm:text-lg font-black text-white leading-none">DAILY SATTA KINGS</h1>
@@ -107,16 +109,32 @@ const Navbar = () => {
                 <span className="text-emerald-300 text-xs font-bold uppercase tracking-wider">Live</span>
               </div>
 
-              {/* Mobile Menu Button */}
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden w-8 h-8 flex flex-col items-center justify-center gap-1 rounded-lg bg-teal-400/15 hover:bg-teal-400/25 transition-colors flex-shrink-0"
-                aria-label="Toggle menu"
-              >
-                <span className={`w-4 h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? "rotate-45 translate-y-1.5" : ""}`}></span>
-                <span className={`w-4 h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? "opacity-0" : ""}`}></span>
-                <span className={`w-4 h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? "-rotate-45 -translate-y-1.5" : ""}`}></span>
-              </button>
+              <div className="md:hidden ml-auto flex items-center justify-end gap-2">
+                {paymentProofLink && (
+                  <Link
+                    href={paymentProofLink.href}
+                    className={`inline-flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-lg text-xs font-bold uppercase transition-all duration-300 flex-shrink-0 ${isActive(paymentProofLink.href)
+                      ? "bg-gradient-to-r from-teal-400 to-amber-400 text-slate-950"
+                      : "bg-teal-400/15 text-white hover:bg-teal-400/25"
+                      }`}
+                    aria-label="Payment Proof"
+                  >
+                    <span className="text-base">{paymentProofLink.icon}</span>
+                    <span>Proof</span>
+                  </Link>
+                )}
+
+                {/* Mobile Menu Button */}
+                <button
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  className="w-8 h-8 flex flex-col items-center justify-center gap-1 rounded-lg bg-teal-400/15 hover:bg-teal-400/25 transition-colors flex-shrink-0"
+                  aria-label="Toggle menu"
+                >
+                  <span className={`w-4 h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? "rotate-45 translate-y-1.5" : ""}`}></span>
+                  <span className={`w-4 h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? "opacity-0" : ""}`}></span>
+                  <span className={`w-4 h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? "-rotate-45 -translate-y-1.5" : ""}`}></span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -124,7 +142,7 @@ const Navbar = () => {
         {/* Mobile Menu */}
         <div className={`md:hidden bg-slate-950/95 backdrop-blur-lg border-b border-teal-400/25 overflow-hidden transition-all duration-300 ${mobileMenuOpen ? "max-h-[420px]" : "max-h-0"}`}>
           <div className="px-3 py-3 space-y-1.5">
-            {sattaLinks.map((link) => (
+            {mobileMenuLinks.map((link) => (
               <Link
                 href={link.href}
                 key={link.id}

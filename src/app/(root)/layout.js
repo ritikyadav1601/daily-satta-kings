@@ -13,7 +13,6 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   const setting = buildSiteConfig(await getSettingsFromDB());
   const currentYear = new Date().getFullYear();
-  const whatsappNumber = setting?.khaiwalSection1?.whatsappNumber || setting?.site2_whatsappNumber;
 
   return (
     <div className="min-h-screen bg-main-gradient pattern-grid">
@@ -22,24 +21,6 @@ export default async function RootLayout({ children }) {
       <main>
         {children}
       </main>
-
-      {/* WhatsApp Button with Glow */}
-      {whatsappNumber && (
-        <Link
-          className="fixed bottom-6 right-6 hover:scale-110 transition-all duration-300 z-50 group"
-          target="_blank"
-          href={`https://wa.me/+91${whatsappNumber}`}
-        >
-          <div className="absolute inset-0 bg-green-500 rounded-full blur-xl opacity-50 group-hover:opacity-80 transition-opacity"></div>
-          <Image
-            className="max-sm:!size-14 relative z-10"
-            width={70}
-            height={70}
-            src="https://i.ibb.co/x8fsyXVj/Whats-App-svg.webp"
-            alt="whatsapp"
-          />
-        </Link>
-      )}
 
       {/* Footer */}
       <footer className="mt-8 relative overflow-hidden">

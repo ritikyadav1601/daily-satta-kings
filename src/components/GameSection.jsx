@@ -29,14 +29,25 @@ const GamePage = ({ data, setting, disawarData, todayResults = [] }) => {
   // Get current time in IST minutes
   const currentMinutes = getCurrentISTMinutes();
 
-  // Find the next game based on current time (fallback only)
-  const nextGame = GAMES.find(game => parseTimeToMinutes(game.time) > currentMinutes) || GAMES[0];
+  const gamesByTime = [...GAMES].sort(
+    (a, b) => parseTimeToMinutes(a.time) - parseTimeToMinutes(b.time)
+  );
+
+  // Find the next game by actual clock time, not display order.
+  const nextGame = gamesByTime.find(game => parseTimeToMinutes(game.time) > currentMinutes) || gamesByTime[0];
 
   const activeGameKeys = new Set(GAMES.map((game) => game.key));
-  const activeGameData = data && activeGameKeys.has(data.game) ? data : null;
-  const waitingGame = activeGameKeys.has(activeGameData?.waitingGame)
-    ? activeGameData.waitingGame
-    : nextGame.key;
+  const validTodayResults = todayResults
+    .filter((result) => activeGameKeys.has(result.game) && result.resultNumber)
+    .sort((a, b) => {
+      const bTime = new Date(b.updatedAt || b.createdAt || 0).getTime();
+      const aTime = new Date(a.updatedAt || a.createdAt || 0).getTime();
+      return bTime - aTime;
+    });
+  const latestTodayResult = validTodayResults[0] || null;
+  const activeGameData = latestTodayResult || (data && activeGameKeys.has(data.game) ? data : null);
+
+  const waitingGame = nextGame.key;
 
   const getGameName = (key) => {
     return GAMES.find((game) => game.key === key)?.name || nextGame.name;

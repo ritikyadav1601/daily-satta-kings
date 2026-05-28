@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { GAMES, GAME_MAPPING } from "@/utils/gameConfig";
+import { GAMES } from "@/utils/gameConfig";
 
 const SattaResultTable = ({ todayResults = [], yesterdayResults = [] }) => {
   // Create games array from centralized config
@@ -14,7 +14,7 @@ const SattaResultTable = ({ todayResults = [], yesterdayResults = [] }) => {
 
     return {
       id: index + 1,
-      displayName: game.name,
+      displayName: game.hindiName || game.name,
       time: game.time,
       yesterdayResult: yesterdayResult || "--",
       todayResult: todayResult,

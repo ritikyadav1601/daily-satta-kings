@@ -4,6 +4,28 @@ import Image from "next/image";
 import Link from "next/link";
 import { DEFAULT_GAME_SCHEDULE, resolveGameSchedule } from "@/utils/gameConfig";
 
+const HINDI_GAME_NAMES = {
+  "SADAR BAZAR": "सदर बाजार",
+  GWALIOR: "ग्वालियर",
+  "DELHI BAZAR": "दिल्ली बाजार",
+  "DELHI MATKA": "दिल्ली मटका",
+  "SHRI GANESH": "श्री गणेश",
+  AGRA: "आगरा",
+  FARIDABAD: "फरीदाबाद",
+  ALWAR: "अलवर",
+  GAZIABAD: "गाजियाबाद",
+  GHAZIABAD: "गाजियाबाद",
+  DWARKA: "द्वारका",
+  GALI: "गली",
+  DISAWAR: "दिसावर",
+  DISAWER: "दिसावर",
+};
+
+const getHindiGameName = (name = "") => {
+  const normalizedName = name.trim().toUpperCase();
+  return HINDI_GAME_NAMES[normalizedName] || name;
+};
+
 const KhaiwalCard = ({ section }) => {
   const schedule = resolveGameSchedule(section?.gameSchedule || DEFAULT_GAME_SCHEDULE);
   const contactName = section?.contactName ? `${section.contactName} BHAI KHAIWAL` : "KHAIWAL";
@@ -26,7 +48,7 @@ const KhaiwalCard = ({ section }) => {
             key={index}
             className="flex justify-between text-sm items-center py-2 border-b border-white/10 last:border-0 hover:bg-white/5 px-2 rounded transition-colors"
           >
-            <span className="text-teal-50 font-semibold">{game.name}</span>
+            <span className="text-teal-50 font-semibold hindi-text">{getHindiGameName(game.name)}</span>
             <span className="text-amber-200 font-bold">{game.time}</span>
           </div>
         ))}
