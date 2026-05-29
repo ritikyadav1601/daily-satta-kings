@@ -37,15 +37,15 @@ const GamePage = ({ data, setting, disawarData, todayResults = [] }) => {
   const nextGame = gamesByTime.find(game => parseTimeToMinutes(game.time) > currentMinutes) || gamesByTime[0];
 
   const activeGameKeys = new Set(GAMES.map((game) => game.key));
+  const gameTimeByKey = new Map(
+    GAMES.map((game) => [game.key, parseTimeToMinutes(game.time)])
+  );
   const validTodayResults = todayResults
-    .filter((result) => activeGameKeys.has(result.game) && result.resultNumber)
-    .sort((a, b) => {
-      const bTime = new Date(b.updatedAt || b.createdAt || 0).getTime();
-      const aTime = new Date(a.updatedAt || a.createdAt || 0).getTime();
-      return bTime - aTime;
-    });
-  const latestTodayResult = validTodayResults[0] || null;
-  const activeGameData = latestTodayResult || (data && activeGameKeys.has(data.game) ? data : null);
+    .filter((result) => activeGameKeys.has(result.game) && result.resultNumber);
+  const latestScheduledResult = validTodayResults
+    .filter((result) => gameTimeByKey.get(result.game) <= currentMinutes)
+    .sort((a, b) => gameTimeByKey.get(b.game) - gameTimeByKey.get(a.game))[0] || null;
+  const activeGameData = latestScheduledResult || (data && activeGameKeys.has(data.game) ? data : null);
 
   const waitingGame = nextGame.key;
 
