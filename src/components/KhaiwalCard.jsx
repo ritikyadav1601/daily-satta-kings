@@ -1,6 +1,3 @@
-"use client";
-
-import Image from "next/image";
 import Link from "next/link";
 import { DEFAULT_GAME_SCHEDULE, resolveGameSchedule } from "@/utils/gameConfig";
 
@@ -75,12 +72,9 @@ const KhaiwalCard = ({ section }) => {
             href={`https://wa.me/+91${whatsappNumber}`}
             className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-white px-8 py-3.5 rounded-full font-bold transition-all duration-300 hover:shadow-lg hover:shadow-green-500/30 hover:scale-105 btn-glow"
           >
-            <Image
-              width={24}
-              height={24}
-              src="https://i.ibb.co/x8fsyXVj/Whats-App-svg.webp"
-              alt="whatsapp"
-            />
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-[10px] font-black text-green-600">
+              WA
+            </span>
             <span className="hindi-text">WhatsApp पर संपर्क करें</span>
           </Link>
         )}

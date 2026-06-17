@@ -1,7 +1,6 @@
-"use client";
-import Image from "next/image";
 import Link from "next/link";
 import DateTime from "./DateTime";
+import LoadingSpinner from "./LoadingSpinner";
 import { GAMES } from "@/utils/gameConfig";
 
 const GamePage = ({ data, setting, disawarData, todayResults = [] }) => {
@@ -77,26 +76,14 @@ const GamePage = ({ data, setting, disawarData, todayResults = [] }) => {
               <p className="text-amber-300 text-2xl sm:text-[28px] font-bold">
                 {getGameName(waitingGame)}
               </p>
-              <Image
-                className="mx-auto rounded-full"
-                alt="wait icon"
-                width={45}
-                height={45}
-                src="/loading.gif"
-              />
+              <LoadingSpinner className="mx-auto h-11 w-11" />
             </>
           ) : (
             <>
               <p className="text-amber-300 text-2xl sm:text-[28px] font-bold">
                 {nextGame.name}
               </p>
-              <Image
-                className="mx-auto rounded-full"
-                alt="wait icon"
-                width={45}
-                height={45}
-                src="/loading.gif"
-              />
+              <LoadingSpinner className="mx-auto h-11 w-11" />
             </>
           )}
         </div>
@@ -137,13 +124,7 @@ const GamePage = ({ data, setting, disawarData, todayResults = [] }) => {
               <span className="text-sm text-white uppercase tracking-wider mb-1">Today</span>
               <span className="text-xl sm:text-2xl font-black text-white bg-amber-500/25 border border-amber-300/45 px-5 py-2.5 rounded-xl shadow-lg shadow-amber-500/20">
                 {disawarData?.today || (
-                  <Image
-                    className="inline rounded-full"
-                    alt="wait icon"
-                    width={28}
-                    height={28}
-                    src="/loading.gif"
-                  />
+                  <LoadingSpinner className="inline-flex h-7 w-7 align-middle" />
                 )}
               </span>
             </div>

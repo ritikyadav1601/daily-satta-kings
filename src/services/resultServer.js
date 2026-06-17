@@ -1,4 +1,5 @@
 // Server-side results service - uses direct database access
+import { unstable_cache } from "next/cache";
 import { connectDB } from "@/lib/db";
 import Result from "@/models/Result";
 import { GAMES, GAME_KEYS } from "@/utils/gameConfig";
@@ -43,14 +44,14 @@ function getISTDate(daysOffset = 0) {
     return `${year}-${month}-${day}`;
 }
 
-export async function getTodayResultFromDB() {
+async function fetchTodayResultFromDB() {
     try {
         await connectDB();
         const today = getISTDate();
-        console.log('DB: Fetching results for:', today);
 
         const results = await Result.find({ date: today, game: { $in: GAME_KEYS } })
             .sort({ updatedAt: -1 })
+            .select("game date resultNumber waitingGame updatedAt")
             .lean();
 
         return JSON.parse(JSON.stringify(sanitizeResults(results)));
@@ -60,14 +61,14 @@ export async function getTodayResultFromDB() {
     }
 }
 
-export async function getYesterdayResultsFromDB() {
+async function fetchYesterdayResultsFromDB() {
     try {
         await connectDB();
         const yesterday = getISTDate(-1);
-        console.log('DB: Fetching yesterday results for:', yesterday);
 
         const results = await Result.find({ date: yesterday, game: { $in: GAME_KEYS } })
             .sort({ updatedAt: -1 })
+            .select("game date resultNumber waitingGame updatedAt")
             .lean();
 
         return JSON.parse(JSON.stringify(sanitizeResults(results)));
@@ -77,12 +78,13 @@ export async function getYesterdayResultsFromDB() {
     }
 }
 
-export async function getLastResultFromDB() {
+async function fetchLastResultFromDB() {
     try {
         await connectDB();
         const result = await Result.find({ game: { $in: GAME_KEYS } })
             .sort({ updatedAt: -1 })
             .limit(1)
+            .select("game date resultNumber waitingGame updatedAt")
             .lean();
 
         if (!result || result.length === 0) return null;
@@ -93,7 +95,7 @@ export async function getLastResultFromDB() {
     }
 }
 
-export async function getMonthlyResultsFromDB(month, year) {
+async function fetchMonthlyResultsFromDB(month, year) {
     try {
         await connectDB();
         const monthStr = String(month).padStart(2, '0');
@@ -103,7 +105,10 @@ export async function getMonthlyResultsFromDB(month, year) {
         const results = await Result.find({
             game: { $in: GAME_KEYS },
             date: { $gte: startDate, $lte: endDate }
-        }).sort({ date: 1 }).lean();
+        })
+            .sort({ date: 1 })
+            .select("game date resultNumber waitingGame")
+            .lean();
 
         return JSON.parse(JSON.stringify(sanitizeResults(results)));
     } catch (error) {
@@ -112,7 +117,7 @@ export async function getMonthlyResultsFromDB(month, year) {
     }
 }
 
-export async function getDisawarDataFromDB() {
+async function fetchDisawarDataFromDB() {
     try {
         await connectDB();
         const today = getISTDate();
@@ -122,13 +127,13 @@ export async function getDisawarDataFromDB() {
         const todayResult = await Result.findOne({
             date: today,
             game: 'disawer'
-        }).lean();
+        }).select("resultNumber").lean();
 
         // Get yesterday's DISAWAR result
         const yesterdayResult = await Result.findOne({
             date: yesterday,
             game: 'disawer'
-        }).lean();
+        }).select("resultNumber").lean();
 
         return {
             today: todayResult?.resultNumber || null,
@@ -140,20 +145,36 @@ export async function getDisawarDataFromDB() {
     }
 }
 
-export async function getYearlyResultsFromDB(gameKey, year) {
+export const getTodayResultFromDB = unstable_cache(fetchTodayResultFromDB, ["today-results"], {
+    revalidate: 30,
+});
+
+export const getYesterdayResultsFromDB = unstable_cache(fetchYesterdayResultsFromDB, ["yesterday-results"], {
+    revalidate: 60,
+});
+
+export const getLastResultFromDB = unstable_cache(fetchLastResultFromDB, ["last-result"], {
+    revalidate: 30,
+});
+
+export const getMonthlyResultsFromDB = unstable_cache(fetchMonthlyResultsFromDB, ["monthly-results"], {
+    revalidate: 60,
+});
+
+export const getDisawarDataFromDB = unstable_cache(fetchDisawarDataFromDB, ["disawar-data"], {
+    revalidate: 30,
+});
+
+async function fetchYearlyResultsFromDB(gameKey, year) {
     try {
         await connectDB();
         const startDate = `${year}-01-01`;
         const endDate = `${year}-12-31`;
 
-        console.log(`DB: Fetching yearly results for ${gameKey} in ${year}`);
-
         const results = await Result.find({
             game: gameKey,
             date: { $gte: startDate, $lte: endDate }
-        }).sort({ date: 1 }).lean();
-
-        console.log(`DB: Found ${results.length} results for ${gameKey} in ${year}`);
+        }).sort({ date: 1 }).select("game date resultNumber waitingGame").lean();
 
         return JSON.parse(JSON.stringify(sanitizeResults(results)));
     } catch (error) {
@@ -161,6 +182,10 @@ export async function getYearlyResultsFromDB(gameKey, year) {
         return [];
     }
 }
+
+export const getYearlyResultsFromDB = unstable_cache(fetchYearlyResultsFromDB, ["yearly-results"], {
+    revalidate: 300,
+});
 
 // ==================== CHART HELPERS ====================
 const currentYear = new Date().getFullYear();

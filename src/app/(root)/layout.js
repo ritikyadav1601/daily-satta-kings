@@ -1,5 +1,4 @@
 import Navbar from "@/components/common/Navbar";
-import TopProgressBar from "@/components/TopProgressBar";
 import { buildSiteConfig, getSettingsFromDB } from "@/services/settingsServer";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,7 +15,6 @@ export default async function RootLayout({ children }) {
 
   return (
     <div className="min-h-screen bg-main-gradient pattern-grid">
-      <TopProgressBar />
       <Navbar />
       <main>
         {children}
@@ -45,12 +43,9 @@ export default async function RootLayout({ children }) {
                     target="_blank"
                     className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-white transition-colors"
                   >
-                    <Image
-                      src="https://i.ibb.co/x8fsyXVj/Whats-App-svg.webp"
-                      width={20}
-                      height={20}
-                      alt="whatsapp"
-                    />
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-[9px] font-black text-emerald-600">
+                      WA
+                    </span>
                     <span className="text-sm font-semibold">WhatsApp</span>
                   </Link>
                 )}

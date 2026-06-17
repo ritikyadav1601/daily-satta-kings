@@ -1,4 +1,5 @@
 // Server-side settings service - uses direct database access
+import { unstable_cache } from "next/cache";
 import { connectDB } from "@/lib/db";
 import Settings from "@/models/Settings";
 import { DEFAULT_GAME_SCHEDULE, resolveGameSchedule } from "@/utils/gameConfig";
@@ -6,7 +7,7 @@ import { DEFAULT_GAME_SCHEDULE, resolveGameSchedule } from "@/utils/gameConfig";
 // Default game schedule
 const defaultGameSchedule = DEFAULT_GAME_SCHEDULE;
 
-export async function getSettingsFromDB() {
+async function fetchSettingsFromDB() {
     try {
         await connectDB();
         const settings = await Settings.findOne({}).lean();
@@ -22,6 +23,10 @@ export async function getSettingsFromDB() {
         return null;
     }
 }
+
+export const getSettingsFromDB = unstable_cache(fetchSettingsFromDB, ["site-settings"], {
+    revalidate: 300,
+});
 
 export function buildSiteConfig(settings) {
     // Build khaiwal sections from settings

@@ -1,38 +1,11 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const Navbar = () => {
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [showNavbar, setShowNavbar] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const lastScroll = useRef(0);
   const pathname = usePathname();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.body.scrollHeight - window.innerHeight;
-      const progress = (scrollTop / docHeight) * 100;
-      setScrollProgress(progress);
-
-      if (scrollTop > 100) {
-        // if (scrollTop > lastScroll.current) {
-        //   // setShowNavbar(false);
-        //   // setMobileMenuOpen(false);
-        // } else {
-        // }
-        setShowNavbar(true);
-      } else {
-        setShowNavbar(true);
-      }
-      lastScroll.current = scrollTop;
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -57,15 +30,12 @@ const Navbar = () => {
     <>
       {/* Scroll Progress - Gradient Effect */}
       <div className="fixed top-0 left-0 w-full h-1 z-50 bg-slate-950/60">
-        <div
-          className="h-1 bg-gradient-to-r from-teal-400 via-amber-400 to-sky-400 transition-all duration-150 shadow-lg shadow-teal-500/40"
-          style={{ width: `${scrollProgress}%` }}
-        ></div>
+        <div className="h-1 w-full bg-gradient-to-r from-teal-400 via-amber-400 to-sky-400 shadow-lg shadow-teal-500/40"></div>
       </div>
 
       {/* Navbar */}
       <nav
-        className={`w-full z-40 transition-all duration-500 sticky top-0 ${showNavbar ? "translate-y-0" : "-translate-y-full"}`}
+        className="w-full z-40 transition-all duration-500 sticky top-0"
       >
         {/* Main Nav Bar */}
         <div className="bg-gradient-to-r from-slate-950 via-teal-950 to-slate-900 border-b border-teal-400/25 shadow-xl shadow-teal-950/30">

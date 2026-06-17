@@ -1,6 +1,6 @@
 import React from "react";
-import Image from "next/image";
 import { GAMES } from "@/utils/gameConfig";
+import LoadingSpinner from "./LoadingSpinner";
 
 const SattaResultTable = ({ todayResults = [], yesterdayResults = [] }) => {
   // Create games array from centralized config
@@ -27,14 +27,7 @@ const SattaResultTable = ({ todayResults = [], yesterdayResults = [] }) => {
     if (isLoading) {
       return (
         <div className="flex justify-center">
-          <Image
-            alt="wait"
-            width={40}
-            height={40}
-            src="/loading.gif"
-            className="rounded-full"
-            priority={false}
-          />
+          <LoadingSpinner className="h-10 w-10" />
         </div>
       );
     }

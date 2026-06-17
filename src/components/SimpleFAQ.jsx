@@ -1,5 +1,3 @@
-"use client";
-
 const SimpleFAQ = () => {
     const faqItems = [
         {

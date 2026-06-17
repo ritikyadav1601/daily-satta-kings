@@ -1,4 +1,3 @@
-import { Geist, Geist_Mono } from "next/font/google";
 import SattaDashboard from "@/components/SattaDashboard";
 import {
   getTodayResultFromDB,
@@ -15,27 +14,29 @@ export const metadata = {
 };
 
 export default async function Home() {
-  // Fetch all data directly from database
-  const [todayResults, yesterdayResults, lastResult, disawarData, settings] =
+  const currentDate = new Date();
+
+  // Fetch all public data in parallel to keep server response time low.
+  const [
+    todayResults,
+    yesterdayResults,
+    lastResult,
+    disawarData,
+    settings,
+    monthlyResults,
+  ] =
     await Promise.all([
       getTodayResultFromDB(),
       getYesterdayResultsFromDB(),
       getLastResultFromDB(),
       getDisawarDataFromDB(),
       getSettingsFromDB(),
+      getMonthlyResultsFromDB(
+        currentDate.getMonth() + 1,
+        currentDate.getFullYear()
+      ),
     ]);
 
-  console.log("Settings from DB:", settings?.khaiwalSection1 ? "Section1 present" : "Section1 missing");
-  console.log("Settings from DB:", settings?.khaiwalSection2 ? "Section2 present" : "Section2 missing");
-
-  // Get current month's results
-  const currentDate = new Date();
-  const monthlyResults = await getMonthlyResultsFromDB(
-    currentDate.getMonth() + 1,
-    currentDate.getFullYear()
-  );
-
-  // Build site config with khaiwal sections
   const siteConfig = buildSiteConfig(settings);
 
   return (
@@ -50,5 +51,4 @@ export default async function Home() {
   );
 }
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 30;

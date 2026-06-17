@@ -1,5 +1,3 @@
-"use client";
-
 const contentSections = [
   {
     title: "Daily Satta Kings - Today Satta Result, Satta King Chart and A 7 Satta Updates",

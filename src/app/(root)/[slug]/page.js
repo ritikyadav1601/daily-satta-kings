@@ -11,7 +11,6 @@ import {
 const DynamicTable = async ({ params }) => {
   const { slug } = await params;
 
-  // Get game key and display info from slug
   const gameKey = gameSlugMapping[slug];
   const slugData = parseSlugData(slug);
 
@@ -21,7 +20,6 @@ const DynamicTable = async ({ params }) => {
 
   const { name: gameName, year } = slugData;
 
-  // Fetch yearly data directly from database
   const results = await getYearlyResultsFromDB(gameKey, year);
   const yearlyData = transformYearlyData(results);
 
@@ -37,5 +35,4 @@ const DynamicTable = async ({ params }) => {
 
 export default DynamicTable;
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 300;

@@ -1,8 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  compress: true,
+  poweredByHeader: false,
   images: {
-    domains: ["i.ibb.co", 'cdn.prod.website-files.com'],
-    remotePatterns: [new URL("https://www.dailysattakings.com/**")],
+    formats: ["image/avif", "image/webp"],
+    deviceSizes: [360, 640, 768, 1024, 1280],
   },
 };
 

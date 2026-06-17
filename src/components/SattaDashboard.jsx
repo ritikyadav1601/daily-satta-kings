@@ -1,12 +1,9 @@
-"use client";
 import { DEFAULT_GAME_SCHEDULE, GAMES } from "@/utils/gameConfig";
 import GameSection from "./GameSection";
 import KhaiwalCard from "./KhaiwalCard";
 import InformationalContent from "./InformationalContent";
 import SattaResultTable from "./SattaResultTable";
 import SimpleFAQ from "./SimpleFAQ";
-import Link from "next/link";
-import Image from "next/image";
 
 const SattaDashboard = ({
   todayResults = [],
