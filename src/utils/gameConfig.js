@@ -1,4 +1,3 @@
-
 export const GAMES = [
   {
     key: "sadar-bazar",
@@ -84,21 +83,63 @@ export const GAMES = [
     time: "01:30 AM",
     order: 12,
   },
+  // ── New games ──────────────────────────────────────────
+  {
+    key: "up-bazar",
+    name: "UP BAZAR",
+    hindiName: "यू.पी. बाजार",
+    time: "01:30 PM",
+    order: 13,
+  },
+  {
+    key: "mathura-city",
+    name: "MATHURA CITY",
+    hindiName: "मथुरा सिटी",
+    time: "02:30 PM",
+    order: 14,
+  },
+  {
+    key: "manipur",
+    name: "MANIPUR",
+    hindiName: "मणिपुर",
+    time: "03:40 PM",
+    order: 15,
+  },
+  {
+    key: "palwal-city",
+    name: "PALWAL CITY",
+    hindiName: "पलवल सिटी",
+    time: "07:30 PM",
+    order: 16,
+  },
+  {
+    key: "kolhapur",
+    name: "KOLHAPUR",
+    hindiName: "कोल्हापुर",
+    time: "10:40 PM",
+    order: 17,
+  },
 ];
 
 export const DEFAULT_GAME_SCHEDULE = [
-  { name: "SADAR BAZAR", time: "01:30 PM" },
-  { name: "GWALIOR", time: "02:30 PM" },
-  { name: "DELHI BAZAR", time: "02:50 PM" },
-  { name: "DELHI MATKA", time: "03:20 PM" },
-  { name: "SHRI GANESH", time: "04:20 PM" },
-  { name: "AGRA", time: "05:20 PM" },
-  { name: "FARIDABAD", time: "05:50 PM" },
-  { name: "ALWAR", time: "07:20 PM" },
-  { name: "GAZIABAD", time: "08:50 PM" },
-  { name: "DWARKA", time: "10:10 PM" },
-  { name: "GALI", time: "11:20 PM" },
-  { name: "DISAWAR", time: "01:30 AM" },
+  { name: "SADAR BAZAR",   time: "01:30 PM" },
+  { name: "GWALIOR",       time: "02:30 PM" },
+  { name: "DELHI BAZAR",   time: "02:50 PM" },
+  { name: "DELHI MATKA",   time: "03:20 PM" },
+  { name: "SHRI GANESH",   time: "04:20 PM" },
+  { name: "AGRA",          time: "05:20 PM" },
+  { name: "FARIDABAD",     time: "05:50 PM" },
+  { name: "ALWAR",         time: "07:20 PM" },
+  { name: "GAZIABAD",      time: "08:50 PM" },
+  { name: "DWARKA",        time: "10:10 PM" },
+  { name: "GALI",          time: "11:20 PM" },
+  { name: "DISAWAR",       time: "01:30 AM" },
+  // New games
+  { name: "UP BAZAR",      time: "01:30 PM" },
+  { name: "MATHURA CITY",  time: "02:30 PM" },
+  { name: "MANIPUR",       time: "03:40 PM" },
+  { name: "PALWAL CITY",   time: "07:30 PM" },
+  { name: "KOLHAPUR",      time: "10:40 PM" },
 ];
 
 const ACTIVE_GAME_SCHEDULE = new Map(
@@ -140,7 +181,7 @@ export const GAME_KEYS = GAMES.map(game => game.key);
 // Get all game names for display
 export const GAME_NAMES = GAMES.map(game => game.name);
 
-// Create options for Sanity schema
+// Create options for Sanity schema / admin dropdowns
 export const GAME_OPTIONS = GAMES.map(game => ({
   title: game.name,
   value: game.key
