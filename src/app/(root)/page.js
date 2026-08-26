@@ -13,6 +13,10 @@ export const metadata = {
   description: "Check Daily Satta Kings for today satta result, latest satta king chart, and A7 satta updates. Get fast, clear, and updated satta king information in one place.",
 };
 
+// Always render with the latest results stored in MongoDB.
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function Home() {
   const currentDate = new Date();
 
@@ -50,5 +54,3 @@ export default async function Home() {
     />
   );
 }
-
-export const revalidate = 30;

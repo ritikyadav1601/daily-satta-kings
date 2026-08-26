@@ -3,6 +3,7 @@ import { unstable_cache } from "next/cache";
 import { connectDB } from "@/lib/db";
 import Settings from "@/models/Settings";
 import { DEFAULT_GAME_SCHEDULE, resolveGameSchedule } from "@/utils/gameConfig";
+import { KHAIWAL_NAME, WHATSAPP_NUMBER } from "@/utils/contactConfig";
 
 // Default game schedule
 const defaultGameSchedule = DEFAULT_GAME_SCHEDULE;
@@ -32,8 +33,8 @@ export function buildSiteConfig(settings) {
     // Build khaiwal sections from settings
     const khaiwalSection1 = settings?.khaiwalSection1 || {
         enabled: true,
-        contactName: settings?.site1_contactName || settings?.contactName || "TEJU BHAI KHAIWAL",
-        whatsappNumber: settings?.site1_whatsappNumber || settings?.whatsappNumber || "",
+        contactName: KHAIWAL_NAME,
+        whatsappNumber: WHATSAPP_NUMBER,
         paymentNumber: settings?.site1_paymentNumber || "",
         rate: settings?.site1_rate || "",
         gameSchedule: defaultGameSchedule
@@ -52,12 +53,14 @@ export function buildSiteConfig(settings) {
     return {
         siteName: "Daily satta kings",
         contactName: settings?.site2_contactName || settings?.contactName || "",
-        whatsappNumber: settings?.site2_whatsappNumber || settings?.whatsappNumber || "",
+        whatsappNumber: WHATSAPP_NUMBER,
         paymentNumber: settings?.site2_paymentNumber || "",
         rate: settings?.site2_rate || "",
         // Khaiwal sections for bottom static section
         khaiwalSection1: {
             ...khaiwalSection1,
+            contactName: KHAIWAL_NAME,
+            whatsappNumber: WHATSAPP_NUMBER,
             gameSchedule: resolveGameSchedule(khaiwalSection1.gameSchedule || defaultGameSchedule)
         },
         khaiwalSection2: {

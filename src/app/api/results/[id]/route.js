@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import Result from "@/models/Result";
-import { GAMES, GAME_KEYS } from "@/utils/gameConfig";
+import { GAMES, GAME_KEYS, getGameByMongoId } from "@/utils/gameConfig";
 
 function getNextGameKey(gameKey) {
     const currentIndex = GAMES.findIndex((game) => game.key === gameKey);
@@ -13,15 +13,16 @@ function sanitizeResult(result) {
     if (!result) return result;
 
     const plainResult = typeof result.toObject === "function" ? result.toObject() : result;
-    const game = GAME_KEYS.includes(plainResult.game) ? plainResult.game : GAMES[0].key;
-    const waitingGame = GAME_KEYS.includes(plainResult.waitingGame)
-        ? plainResult.waitingGame
-        : getNextGameKey(game);
+    const sourceGame = getGameByMongoId(plainResult.game);
+    if (!sourceGame) return null;
+    const game = sourceGame.key;
 
     return {
         ...plainResult,
         game,
-        waitingGame,
+        date: plainResult.resultDate,
+        resultNumber: plainResult.result,
+        waitingGame: getNextGameKey(game),
     };
 }
 
@@ -79,10 +80,13 @@ export async function PUT(request, { params }) {
             );
         }
 
+        const selectedGame = GAMES.find(
+            (game) => game.key === data.game.toLowerCase().trim()
+        );
         const normalizedData = {
-            ...data,
-            game: data.game.toLowerCase().trim(),
-            waitingGame: data.waitingGame ? data.waitingGame.toLowerCase().trim() : "",
+            game: selectedGame.mongoId,
+            resultDate: data.date,
+            result: data.resultNumber,
         };
 
         const result = await Result.findByIdAndUpdate(id, normalizedData, { new: true });

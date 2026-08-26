@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import Result from "@/models/Result";
-import { GAMES, GAME_KEYS } from "@/utils/gameConfig";
+import { GAMES, GAME_KEYS, GAME_MONGO_IDS, getGameByMongoId } from "@/utils/gameConfig";
 
 function getNextGameKey(gameKey) {
     const currentIndex = GAMES.findIndex((activeGame) => activeGame.key === gameKey);
@@ -13,56 +13,35 @@ function sanitizeResult(result) {
     if (!result) return result;
 
     const plainResult = typeof result.toObject === "function" ? result.toObject() : result;
-    const game = GAME_KEYS.includes(plainResult.game) ? plainResult.game : GAMES[0].key;
-    const waitingGame = GAME_KEYS.includes(plainResult.waitingGame)
-        ? plainResult.waitingGame
-        : getNextGameKey(game);
+    const sourceGame = getGameByMongoId(plainResult.game);
+    if (!sourceGame) return null;
+    const game = sourceGame.key;
 
     return {
         ...plainResult,
         game,
-        waitingGame,
+        date: plainResult.resultDate,
+        resultNumber: plainResult.result,
+        waitingGame: getNextGameKey(game),
     };
 }
 
 function sanitizeResults(results = []) {
-    return results.map(sanitizeResult);
+    return results.map(sanitizeResult).filter(Boolean);
 }
 
 function normalizeResultData(data) {
+    const game = GAMES.find((item) => item.key === data.game.toLowerCase().trim());
     return {
-        ...data,
-        game: data.game.toLowerCase().trim(),
-        waitingGame: data.waitingGame ? data.waitingGame.toLowerCase().trim() : "",
+        game: game.mongoId,
+        resultDate: data.date,
+        result: data.resultNumber,
     };
-}
-
-// Function to clean up data older than 2 years
-async function cleanupOldData() {
-    try {
-        const twoYearsAgo = new Date();
-        twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2);
-
-        const cutoffDate = `${twoYearsAgo.getFullYear()}-${String(twoYearsAgo.getMonth() + 1).padStart(2, '0')}-${String(twoYearsAgo.getDate()).padStart(2, '0')}`;
-
-        const result = await Result.deleteMany({
-            date: { $lt: cutoffDate }
-        });
-
-        if (result.deletedCount > 0) {
-            console.log(`Cleanup: Deleted ${result.deletedCount} records older than ${cutoffDate}`);
-        }
-    } catch (error) {
-        console.error("Error during data cleanup:", error);
-    }
 }
 
 export async function GET(request) {
     try {
         await connectDB();
-
-        // Run cleanup for old data (older than 2 years)
-        await cleanupOldData();
 
         // Get query parameters
         const { searchParams } = new URL(request.url);
@@ -77,14 +56,17 @@ export async function GET(request) {
         if (type === "today") {
             // Get today's results
             const today = getISTDate();
-            query = { date: today, game: { $in: GAME_KEYS } };
+            query = { resultDate: today, game: { $in: GAME_MONGO_IDS } };
         } else if (type === "yesterday") {
             // Get yesterday's results
             const yesterday = getISTDate(-1);
-            query = { date: yesterday, game: { $in: GAME_KEYS } };
+            query = { resultDate: yesterday, game: { $in: GAME_MONGO_IDS } };
         } else if (type === "last") {
             // Get last result
-            const results = await Result.findOne({ game: { $in: GAME_KEYS } }).sort({ createdAt: -1 });
+            const results = await Result.findOne({
+                game: { $in: GAME_MONGO_IDS },
+                result: { $nin: ["", null] },
+            }).sort({ updatedAt: -1 });
             return NextResponse.json(sanitizeResult(results) || {});
         } else if (type === "disawar") {
             // Get disawar results
@@ -92,36 +74,39 @@ export async function GET(request) {
             const yesterday = getISTDate(-1);
 
             const [todayResult, yesterdayResult] = await Promise.all([
-                Result.findOne({ game: "disawer", date: today }),
-                Result.findOne({ game: "disawer", date: yesterday }),
+                Result.findOne({ game: GAMES.find((item) => item.key === "disawer").mongoId, resultDate: today }),
+                Result.findOne({ game: GAMES.find((item) => item.key === "disawer").mongoId, resultDate: yesterday }),
             ]);
 
             return NextResponse.json({
-                today: todayResult?.resultNumber || null,
-                yesterday: yesterdayResult?.resultNumber || null,
+                today: todayResult?.result || null,
+                yesterday: yesterdayResult?.result || null,
             });
         } else if (month && year) {
             // Get monthly results
             const start = `${year}-${String(month).padStart(2, "0")}-01`;
             const end = `${year}-${String(month).padStart(2, "0")}-31`;
-            query = { date: { $gte: start, $lte: end }, game: { $in: GAME_KEYS } };
+            query = { resultDate: { $gte: start, $lte: end }, game: { $in: GAME_MONGO_IDS } };
         } else if (game && year) {
             // Get yearly results for a specific game
             const startDate = `${year}-01-01`;
             const endDate = `${year}-12-31`;
+            const selectedGame = GAMES.find((item) => item.key === game.toLowerCase().trim());
             query = {
-                game: game.toLowerCase().trim(),
-                date: { $gte: startDate, $lte: endDate },
+                game: selectedGame?.mongoId || "",
+                resultDate: { $gte: startDate, $lte: endDate },
             };
         } else if (game) {
             // Get results by game
-            query = { game: game.toLowerCase().trim() };
+            query = { game: GAMES.find((item) => item.key === game.toLowerCase().trim())?.mongoId || "" };
         } else if (date) {
             // Get results by date
-            query = { date, game: { $in: GAME_KEYS } };
+            query = { resultDate: date, game: { $in: GAME_MONGO_IDS } };
+        } else {
+            query = { game: { $in: GAME_MONGO_IDS } };
         }
 
-        const results = await Result.find(query).sort({ date: -1 });
+        const results = await Result.find(query).sort({ resultDate: -1 });
         return NextResponse.json(sanitizeResults(results));
     } catch (error) {
         console.error("Error fetching results:", error);

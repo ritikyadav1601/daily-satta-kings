@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { DEFAULT_GAME_SCHEDULE, resolveGameSchedule } from "@/utils/gameConfig";
+import { KHAIWAL_NAME, WHATSAPP_URL } from "@/utils/contactConfig";
 
 const HINDI_GAME_NAMES = {
   "SADAR BAZAR": "सदर बाजार",
@@ -25,8 +26,6 @@ const getHindiGameName = (name = "") => {
 
 const KhaiwalCard = ({ section }) => {
   const schedule = resolveGameSchedule(section?.gameSchedule || DEFAULT_GAME_SCHEDULE);
-  const contactName = section?.contactName ? `${section.contactName} BHAI KHAIWAL` : "KHAIWAL";
-  const whatsappNumber = section?.whatsappNumber || "";
   const telegramNumber = section?.telegramNumber || "123456789";
   const rate = section?.rate || "";
 
@@ -36,7 +35,7 @@ const KhaiwalCard = ({ section }) => {
         -- सीधे सट्टा कंपनी का No. 1 खाईवाल --
       </p>
       <p className="uppercase text-center mb-5 text-xl lg:text-2xl text-white font-black">
-        ♕♕ {contactName} ♕♕
+        ♕♕ {KHAIWAL_NAME} ♕♕
       </p>
 
       <div className="space-y-1 mb-6 bg-white/10 rounded-xl p-4">
@@ -54,10 +53,10 @@ const KhaiwalCard = ({ section }) => {
       <div className="text-center my-5 py-4 bg-white/10 rounded-xl">
         <p className="text-amber-300 font-bold mb-2 text-lg hindi-text">जोड़ी रेट</p>
         <p className="text-teal-50 text-sm md:text-lg font-bold hindi-text">
-          जोड़ी रेट 10 ------- {rate}
+          जोड़ी रेट 10 ------- 960 
         </p>
         <p className="text-teal-50 text-sm md:text-lg font-bold hindi-text">
-          हरूफ रेट 100 ----- {rate}
+          हरूफ रेट 100 ----- 960
         </p>
       </div>
 
@@ -66,10 +65,9 @@ const KhaiwalCard = ({ section }) => {
       </p>
 
       <div className="flex flex-col gap-3 text-center">
-        {whatsappNumber && (
-          <Link
+        <Link
             target="_blank"
-            href={`https://wa.me/+91${whatsappNumber}`}
+            href={WHATSAPP_URL}
             className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-white px-8 py-3.5 rounded-full font-bold transition-all duration-300 hover:shadow-lg hover:shadow-green-500/30 hover:scale-105 btn-glow"
           >
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-[10px] font-black text-green-600">
@@ -77,7 +75,6 @@ const KhaiwalCard = ({ section }) => {
             </span>
             <span className="hindi-text">WhatsApp पर संपर्क करें</span>
           </Link>
-        )}
 
       
       </div>

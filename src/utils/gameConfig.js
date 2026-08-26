@@ -1,6 +1,7 @@
 export const GAMES = [
   {
     key: "sadar-bazar",
+    mongoId: "6a072f5bb69d5189f84fedca",
     name: "SADAR BAZAR",
     hindiName: "सदर बाजार",
     time: "01:30 PM",
@@ -8,6 +9,7 @@ export const GAMES = [
   },
   {
     key: "gwalior",
+    mongoId: "6a072f5bb69d5189f84fedcb",
     name: "GWALIOR",
     hindiName: "ग्वालियर",
     time: "02:30 PM",
@@ -15,6 +17,7 @@ export const GAMES = [
   },
   {
     key: "delhi-bazar",
+    mongoId: "6a072f5bb69d5189f84fedd1",
     name: "DELHI BAZAR",
     hindiName: "दिल्ली बाजार",
     time: "02:50 PM",
@@ -22,6 +25,7 @@ export const GAMES = [
   },
   {
     key: "delhi-matka",
+    mongoId: "6a080f7f36e45249629ca4fc",
     name: "DELHI MATKA",
     hindiName: "दिल्ली मटका",
     time: "03:20 PM",
@@ -29,6 +33,7 @@ export const GAMES = [
   },
   {
     key: "shri-ganesh",
+    mongoId: "6a072f5bb69d5189f84fedcd",
     name: "SHRI GANESH",
     hindiName: "श्री गणेश",
     time: "04:20 PM",
@@ -36,6 +41,7 @@ export const GAMES = [
   },
   {
     key: "agra",
+    mongoId: "6a072f5bb69d5189f84fedd2",
     name: "AGRA",
     hindiName: "आगरा",
     time: "05:20 PM",
@@ -43,6 +49,7 @@ export const GAMES = [
   },
   {
     key: "faridabad",
+    mongoId: "6a072f5bb69d5189f84fedce",
     name: "FARIDABAD",
     hindiName: "फरीदाबाद",
     time: "05:50 PM",
@@ -50,6 +57,7 @@ export const GAMES = [
   },
   {
     key: "alwar",
+    mongoId: "6a072f5bb69d5189f84fedd3",
     name: "ALWAR",
     hindiName: "अलवर",
     time: "07:20 PM",
@@ -57,6 +65,7 @@ export const GAMES = [
   },
   {
     key: "gaziabad",
+    mongoId: "6a072f5bb69d5189f84fedcf",
     name: "GAZIABAD",
     hindiName: "गाजियाबाद",
     time: "08:50 PM",
@@ -64,6 +73,7 @@ export const GAMES = [
   },
   {
     key: "dwarka",
+    mongoId: "6a072f5bb69d5189f84fedd4",
     name: "DWARKA",
     hindiName: "द्वारका",
     time: "10:10 PM",
@@ -71,6 +81,7 @@ export const GAMES = [
   },
   {
     key: "gali",
+    mongoId: "6a072f5bb69d5189f84fedd0",
     name: "GALI",
     hindiName: "गली",
     time: "11:20 PM",
@@ -78,47 +89,13 @@ export const GAMES = [
   },
   {
     key: "disawer",
+    mongoId: "6a072f5bb69d5189f84fedcc",
     name: "DISAWAR",
     hindiName: "दिसावर",
     time: "01:30 AM",
     order: 12,
   },
   // ── New games ──────────────────────────────────────────
-  {
-    key: "up-bazar",
-    name: "UP BAZAR",
-    hindiName: "यू.पी. बाजार",
-    time: "01:30 PM",
-    order: 13,
-  },
-  {
-    key: "mathura-city",
-    name: "MATHURA CITY",
-    hindiName: "मथुरा सिटी",
-    time: "02:30 PM",
-    order: 14,
-  },
-  {
-    key: "manipur",
-    name: "MANIPUR",
-    hindiName: "मणिपुर",
-    time: "03:40 PM",
-    order: 15,
-  },
-  {
-    key: "palwal-city",
-    name: "PALWAL CITY",
-    hindiName: "पलवल सिटी",
-    time: "07:30 PM",
-    order: 16,
-  },
-  {
-    key: "kolhapur",
-    name: "KOLHAPUR",
-    hindiName: "कोल्हापुर",
-    time: "10:40 PM",
-    order: 17,
-  },
 ];
 
 export const DEFAULT_GAME_SCHEDULE = [
@@ -134,12 +111,6 @@ export const DEFAULT_GAME_SCHEDULE = [
   { name: "DWARKA",        time: "10:10 PM" },
   { name: "GALI",          time: "11:20 PM" },
   { name: "DISAWAR",       time: "01:30 AM" },
-  // New games
-  { name: "UP BAZAR",      time: "01:30 PM" },
-  { name: "MATHURA CITY",  time: "02:30 PM" },
-  { name: "MANIPUR",       time: "03:40 PM" },
-  { name: "PALWAL CITY",   time: "07:30 PM" },
-  { name: "KOLHAPUR",      time: "10:40 PM" },
 ];
 
 const ACTIVE_GAME_SCHEDULE = new Map(
@@ -177,6 +148,12 @@ export const getGameByName = (name) => {
 
 // Get all game keys for queries
 export const GAME_KEYS = GAMES.map(game => game.key);
+
+export const GAME_MONGO_IDS = GAMES.map(game => game.mongoId);
+
+export const getGameByMongoId = (mongoId) => {
+  return GAMES.find(game => game.mongoId === String(mongoId));
+};
 
 // Get all game names for display
 export const GAME_NAMES = GAMES.map(game => game.name);

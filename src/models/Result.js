@@ -3,25 +3,18 @@ import mongoose from "mongoose";
 const resultSchema = new mongoose.Schema(
     {
         game: {
-            type: String,
+            type: mongoose.Schema.Types.ObjectId,
             required: true,
-            lowercase: true,
-            trim: true,
+            ref: "Game",
         },
-        date: {
+        resultDate: {
             type: String,
             required: true,
             match: /^\d{4}-\d{2}-\d{2}$/,
         },
-        resultNumber: {
-            type: String,
-            required: true,
-        },
-        waitingGame: {
+        result: {
             type: String,
             default: "",
-            lowercase: true,
-            trim: true,
         },
     },
     {
@@ -30,7 +23,7 @@ const resultSchema = new mongoose.Schema(
 );
 
 // Create compound index for faster queries
-resultSchema.index({ game: 1, date: 1 });
-resultSchema.index({ date: 1 });
+resultSchema.index({ game: 1, resultDate: 1 });
+resultSchema.index({ resultDate: 1 });
 
-export default mongoose.models.Result || mongoose.model("Result", resultSchema);
+export default mongoose.models.GameResult || mongoose.model("GameResult", resultSchema, "gameresults");

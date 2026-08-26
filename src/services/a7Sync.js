@@ -96,10 +96,9 @@ async function fetchGameResults(game, options = {}) {
     }
 
     byDate.set(date, {
-      game: game.key,
-      date,
-      resultNumber,
-      waitingGame: getNextGameKey(game.key),
+      game: game.mongoId,
+      resultDate: date,
+      result: resultNumber,
     });
   }
 
@@ -130,7 +129,7 @@ export async function syncA7Results(options = {}) {
 
     const operations = results.map((result) => ({
       updateOne: {
-        filter: { game: result.game, date: result.date },
+        filter: { game: result.game, resultDate: result.resultDate },
         update: { $set: result },
         upsert: true,
       },
@@ -148,8 +147,8 @@ export async function syncA7Results(options = {}) {
       matched: writeResult.matchedCount,
       modified: writeResult.modifiedCount,
       upserted: writeResult.upsertedCount,
-      first: results[0].date,
-      last: results[results.length - 1].date,
+      first: results[0].resultDate,
+      last: results[results.length - 1].resultDate,
     });
   }
 

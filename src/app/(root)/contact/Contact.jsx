@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import React from "react";
+import { WHATSAPP_URL } from "@/utils/contactConfig";
 
 const Contact = ({ setting }) => {
   return (
@@ -20,7 +21,7 @@ const Contact = ({ setting }) => {
           </p>
           <Link
             target="_blank"
-            href={`https://wa.me/+${setting?.whatsappNumber}`}
+            href={WHATSAPP_URL}
             className="inline-block bg-green-600 hover:bg-green-500 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
           >
             WhatsApp पर संपर्क करें

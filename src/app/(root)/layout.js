@@ -3,6 +3,7 @@ import { buildSiteConfig, getSettingsFromDB } from "@/services/settingsServer";
 import Image from "next/image";
 import Link from "next/link";
 import "../globals.css";
+import { WHATSAPP_URL } from "@/utils/contactConfig";
 
 export const metadata = {
   title: "Daily Satta Kings – Today Satta Result, Satta King Chart & A7 Satta Updates",
@@ -37,9 +38,8 @@ export default async function RootLayout({ children }) {
             <div className="mb-6 pb-6 border-b border-teal-400/30">
               <p className="text-center text-amber-300 font-bold text-base mb-4">📞 Get In Touch</p>
               <div className="flex flex-wrap gap-4 justify-center items-center">
-                {setting?.khaiwalSection1?.whatsappNumber && (
-                  <Link
-                    href={`https://wa.me/+91${setting?.khaiwalSection1?.whatsappNumber}`}
+                <Link
+                    href={WHATSAPP_URL}
                     target="_blank"
                     className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-white transition-colors"
                   >
@@ -48,7 +48,6 @@ export default async function RootLayout({ children }) {
                     </span>
                     <span className="text-sm font-semibold">WhatsApp</span>
                   </Link>
-                )}
                 {setting?.khaiwalSection1?.telegramNumber && (
                   <Link
                     href={`https://t.me/${setting?.khaiwalSection1?.telegramNumber}`}

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
+import { WHATSAPP_URL } from "@/utils/contactConfig";
 
 const FAQPage = () => {
     const [openFAQ, setOpenFAQ] = useState(null);
@@ -142,7 +143,7 @@ const FAQPage = () => {
                             Contact Us
                         </Link>
                         <a
-                            href="https://wa.me/918950312367"
+                            href={WHATSAPP_URL}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="bg-gradient-to-r from-green-500 to-green-600 text-white px-8 py-3 rounded-lg font-bold hover:shadow-lg hover:shadow-green-500/40 transition-all"

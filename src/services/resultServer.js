@@ -1,8 +1,7 @@
 // Server-side results service - uses direct database access
-import { unstable_cache } from "next/cache";
 import { connectDB } from "@/lib/db";
 import Result from "@/models/Result";
-import { GAMES, GAME_KEYS } from "@/utils/gameConfig";
+import { GAMES, GAME_MONGO_IDS, getGameByMongoId } from "@/utils/gameConfig";
 
 function getNextGameKey(gameKey) {
     const currentIndex = GAMES.findIndex((game) => game.key === gameKey);
@@ -13,20 +12,21 @@ function getNextGameKey(gameKey) {
 function sanitizeResult(result) {
     if (!result) return result;
 
-    const game = GAME_KEYS.includes(result.game) ? result.game : GAMES[0].key;
-    const waitingGame = GAME_KEYS.includes(result.waitingGame)
-        ? result.waitingGame
-        : getNextGameKey(game);
+    const sourceGame = getGameByMongoId(result.game);
+    if (!sourceGame) return null;
+    const game = sourceGame.key;
 
     return {
         ...result,
         game,
-        waitingGame,
+        date: result.resultDate,
+        resultNumber: result.result,
+        waitingGame: getNextGameKey(game),
     };
 }
 
 function sanitizeResults(results = []) {
-    return results.map(sanitizeResult);
+    return results.map(sanitizeResult).filter(Boolean);
 }
 
 function getISTDate(daysOffset = 0) {
@@ -49,9 +49,9 @@ async function fetchTodayResultFromDB() {
         await connectDB();
         const today = getISTDate();
 
-        const results = await Result.find({ date: today, game: { $in: GAME_KEYS } })
+        const results = await Result.find({ resultDate: today, game: { $in: GAME_MONGO_IDS } })
             .sort({ updatedAt: -1 })
-            .select("game date resultNumber waitingGame updatedAt")
+            .select("game resultDate result updatedAt")
             .lean();
 
         return JSON.parse(JSON.stringify(sanitizeResults(results)));
@@ -66,9 +66,9 @@ async function fetchYesterdayResultsFromDB() {
         await connectDB();
         const yesterday = getISTDate(-1);
 
-        const results = await Result.find({ date: yesterday, game: { $in: GAME_KEYS } })
+        const results = await Result.find({ resultDate: yesterday, game: { $in: GAME_MONGO_IDS } })
             .sort({ updatedAt: -1 })
-            .select("game date resultNumber waitingGame updatedAt")
+            .select("game resultDate result updatedAt")
             .lean();
 
         return JSON.parse(JSON.stringify(sanitizeResults(results)));
@@ -81,10 +81,13 @@ async function fetchYesterdayResultsFromDB() {
 async function fetchLastResultFromDB() {
     try {
         await connectDB();
-        const result = await Result.find({ game: { $in: GAME_KEYS } })
+        const result = await Result.find({
+            game: { $in: GAME_MONGO_IDS },
+            result: { $nin: ["", null] },
+        })
             .sort({ updatedAt: -1 })
             .limit(1)
-            .select("game date resultNumber waitingGame updatedAt")
+            .select("game resultDate result updatedAt")
             .lean();
 
         if (!result || result.length === 0) return null;
@@ -103,11 +106,11 @@ async function fetchMonthlyResultsFromDB(month, year) {
         const endDate = `${year}-${monthStr}-31`;
 
         const results = await Result.find({
-            game: { $in: GAME_KEYS },
-            date: { $gte: startDate, $lte: endDate }
+            game: { $in: GAME_MONGO_IDS },
+            resultDate: { $gte: startDate, $lte: endDate }
         })
-            .sort({ date: 1 })
-            .select("game date resultNumber waitingGame")
+            .sort({ resultDate: 1 })
+            .select("game resultDate result")
             .lean();
 
         return JSON.parse(JSON.stringify(sanitizeResults(results)));
@@ -125,19 +128,19 @@ async function fetchDisawarDataFromDB() {
 
         // Get today's DISAWAR result (use lowercase 'disawer' as stored in DB)
         const todayResult = await Result.findOne({
-            date: today,
-            game: 'disawer'
-        }).select("resultNumber").lean();
+            resultDate: today,
+            game: GAMES.find((game) => game.key === "disawer").mongoId
+        }).select("result").lean();
 
         // Get yesterday's DISAWAR result
         const yesterdayResult = await Result.findOne({
-            date: yesterday,
-            game: 'disawer'
-        }).select("resultNumber").lean();
+            resultDate: yesterday,
+            game: GAMES.find((game) => game.key === "disawer").mongoId
+        }).select("result").lean();
 
         return {
-            today: todayResult?.resultNumber || null,
-            yesterday: yesterdayResult?.resultNumber || null
+            today: todayResult?.result || null,
+            yesterday: yesterdayResult?.result || null
         };
     } catch (error) {
         console.error("Error fetching DISAWAR data from DB:", error);
@@ -145,25 +148,11 @@ async function fetchDisawarDataFromDB() {
     }
 }
 
-export const getTodayResultFromDB = unstable_cache(fetchTodayResultFromDB, ["today-results"], {
-    revalidate: 30,
-});
-
-export const getYesterdayResultsFromDB = unstable_cache(fetchYesterdayResultsFromDB, ["yesterday-results"], {
-    revalidate: 60,
-});
-
-export const getLastResultFromDB = unstable_cache(fetchLastResultFromDB, ["last-result"], {
-    revalidate: 30,
-});
-
-export const getMonthlyResultsFromDB = unstable_cache(fetchMonthlyResultsFromDB, ["monthly-results"], {
-    revalidate: 60,
-});
-
-export const getDisawarDataFromDB = unstable_cache(fetchDisawarDataFromDB, ["disawar-data"], {
-    revalidate: 30,
-});
+export const getTodayResultFromDB = fetchTodayResultFromDB;
+export const getYesterdayResultsFromDB = fetchYesterdayResultsFromDB;
+export const getLastResultFromDB = fetchLastResultFromDB;
+export const getMonthlyResultsFromDB = fetchMonthlyResultsFromDB;
+export const getDisawarDataFromDB = fetchDisawarDataFromDB;
 
 async function fetchYearlyResultsFromDB(gameKey, year) {
     try {
@@ -171,10 +160,13 @@ async function fetchYearlyResultsFromDB(gameKey, year) {
         const startDate = `${year}-01-01`;
         const endDate = `${year}-12-31`;
 
+        const game = GAMES.find((item) => item.key === gameKey);
+        if (!game) return [];
+
         const results = await Result.find({
-            game: gameKey,
-            date: { $gte: startDate, $lte: endDate }
-        }).sort({ date: 1 }).select("game date resultNumber waitingGame").lean();
+            game: game.mongoId,
+            resultDate: { $gte: startDate, $lte: endDate }
+        }).sort({ resultDate: 1 }).select("game resultDate result").lean();
 
         return JSON.parse(JSON.stringify(sanitizeResults(results)));
     } catch (error) {
@@ -183,9 +175,7 @@ async function fetchYearlyResultsFromDB(gameKey, year) {
     }
 }
 
-export const getYearlyResultsFromDB = unstable_cache(fetchYearlyResultsFromDB, ["yearly-results"], {
-    revalidate: 300,
-});
+export const getYearlyResultsFromDB = fetchYearlyResultsFromDB;
 
 // ==================== CHART HELPERS ====================
 const currentYear = new Date().getFullYear();

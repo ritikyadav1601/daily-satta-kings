@@ -4,6 +4,7 @@ import KhaiwalCard from "./KhaiwalCard";
 import InformationalContent from "./InformationalContent";
 import SattaResultTable from "./SattaResultTable";
 import SimpleFAQ from "./SimpleFAQ";
+import { KHAIWAL_NAME, WHATSAPP_NUMBER } from "@/utils/contactConfig";
 
 const SattaDashboard = ({
   todayResults = [],
@@ -44,11 +45,6 @@ const SattaDashboard = ({
       dwarka:         "DWARKA",
       gali:           "GALI",
       disawer:        "DS",
-      "up-bazar":     "UP BZR",
-      "mathura-city": "MATHRA CITY",
-      manipur:        "MANIPUR",
-      "palwal-city":  "PALWAL",
-      kolhapur:       "KOLHAPUR",
     };
     return {
       ...game,
@@ -73,23 +69,11 @@ const SattaDashboard = ({
     "alwar",
     "dwarka",
   ];
-  const newGameKeys = [
-    "up-bazar",
-    "mathura-city",
-    "manipur",
-    "palwal-city",
-    "kolhapur",
-  ];
-
   const mainMonthlyGames = mainMonthlyGameKeys
     .map((key) => monthlyChartGames.find((game) => game.key === key))
     .filter(Boolean);
 
   const remainingMonthlyGames = originalRemainingGameKeys
-    .map((key) => monthlyChartGames.find((game) => game.key === key))
-    .filter(Boolean);
-
-  const newMonthlyGames = newGameKeys
     .map((key) => monthlyChartGames.find((game) => game.key === key))
     .filter(Boolean);
 
@@ -215,8 +199,8 @@ const SattaDashboard = ({
 
   const khaiwalSection1 = setting?.khaiwalSection1 || {
     enabled: true,
-    contactName: setting?.contactName || "TEJU BHAI KHAIWAL",
-    whatsappNumber: setting?.whatsappNumber || "",
+    contactName: KHAIWAL_NAME,
+    whatsappNumber: WHATSAPP_NUMBER,
     rate: setting?.rate || "",
     gameSchedule: DEFAULT_GAME_SCHEDULE,
   };
@@ -274,8 +258,6 @@ const SattaDashboard = ({
           <div className="md:hidden bg-slate-950 rounded-b-2xl px-2 py-3 space-y-4">
             {renderMonthlyTable(mainMonthlyGames)}
             {renderMonthlyTable(remainingMonthlyGames)}
-            {newMonthlyGames.length > 0 &&
-              renderMonthlyTable(newMonthlyGames, "New Games")}
           </div>
 
           {/* Desktop – unchanged */}

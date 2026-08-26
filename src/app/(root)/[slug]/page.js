@@ -8,6 +8,10 @@ import {
   parseSlugData,
 } from "@/services/resultServer";
 
+// Yearly charts are populated directly from MongoDB on every request.
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const DynamicTable = async ({ params }) => {
   const { slug } = await params;
 
@@ -34,5 +38,3 @@ const DynamicTable = async ({ params }) => {
 };
 
 export default DynamicTable;
-
-export const revalidate = 300;
