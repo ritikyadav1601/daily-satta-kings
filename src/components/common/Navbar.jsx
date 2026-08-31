@@ -17,6 +17,7 @@ const Navbar = () => {
     { id: 2, title: "Chart", href: "/chart", icon: "📊" },
     { id: 3, title: "Payment Proof", href: "/payment-proofs", icon: "💳" },
     { id: 4, title: "Contact", href: "/contact", icon: "📞" },
+    { id: 5, title: "Admin", href: "/login", icon: "🔐" },
   ];
   const mobileMenuLinks = sattaLinks.filter((link) => link.href !== "/payment-proofs");
   const paymentProofLink = sattaLinks.find((link) => link.href === "/payment-proofs");

@@ -4,6 +4,7 @@ import { connectDB } from "@/lib/db";
 import Settings from "@/models/Settings";
 import { DEFAULT_GAME_SCHEDULE, resolveGameSchedule } from "@/utils/gameConfig";
 import { KHAIWAL_NAME, WHATSAPP_NUMBER } from "@/utils/contactConfig";
+import { connectKhaiwalDB } from "@/lib/khaiwalDb";
 
 // Default game schedule
 const defaultGameSchedule = DEFAULT_GAME_SCHEDULE;
@@ -29,7 +30,23 @@ export const getSettingsFromDB = unstable_cache(fetchSettingsFromDB, ["site-sett
     revalidate: 300,
 });
 
-export function buildSiteConfig(settings) {
+export async function getKhaiwalFromDB() {
+    const siteId = process.env.KHAIWAL_SITE_ID || process.env.NEXT_PUBLIC_SITE_ID;
+    if (!siteId) return null;
+    try {
+        const connection = await connectKhaiwalDB();
+        const data = await connection.db.collection("site_settings").findOne(
+            { siteId },
+            { projection: { _id: 0, name: 1, whatsapp: 1 } }
+        );
+        return data ? { contactName: data.name || "", whatsappNumber: data.whatsapp || "" } : null;
+    } catch (error) {
+        console.error("Error fetching Khaiwal data:", error);
+        return null;
+    }
+}
+
+export function buildSiteConfig(settings, khaiwal) {
     // Build khaiwal sections from settings
     const khaiwalSection1 = settings?.khaiwalSection1 || {
         enabled: true,
@@ -59,8 +76,8 @@ export function buildSiteConfig(settings) {
         // Khaiwal sections for bottom static section
         khaiwalSection1: {
             ...khaiwalSection1,
-            contactName: KHAIWAL_NAME,
-            whatsappNumber: WHATSAPP_NUMBER,
+            contactName: khaiwal?.contactName || KHAIWAL_NAME,
+            whatsappNumber: khaiwal?.whatsappNumber || WHATSAPP_NUMBER,
             gameSchedule: resolveGameSchedule(khaiwalSection1.gameSchedule || defaultGameSchedule)
         },
         khaiwalSection2: {

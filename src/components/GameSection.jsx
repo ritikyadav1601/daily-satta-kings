@@ -144,12 +144,7 @@ const GamePage = ({ data, setting, disawarData, todayResults = [] }) => {
 
 
       {/* Payment Option Section */}
-      <div className="mx-2 md:mx-4 mt-4 bg-slate-950/80 rounded-lg py-3 px-4 border border-teal-300/30 drop">
-        <p className="text-center text-amber-300 font-bold text-xl">💸 Payment Option 💸</p>
-        <p className="text-center text-white sm:text-lg">PAYTM//BANK TRANSFER//PHONE PAY//GOOGLE PAY =&lt; ⏺️{setting?.paymentNumber || '7894561230'}⏺️</p>
-        <p className="text-center text-white">==========================</p>
-        <p className="text-center text-white">==========================</p>
-      </div>
+  
 
       {/* Marquee Banner */}
       <div className="mx-2 md:mx-4 mt-4 bg-slate-950/80 rounded-lg py-3 px-4 overflow-hidden border border-teal-400/15">

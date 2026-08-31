@@ -1,5 +1,7 @@
 // app/api/auth/login/route.js
 import { NextResponse } from "next/server";
+import { scryptSync, timingSafeEqual } from "crypto";
+import { connectKhaiwalDB } from "@/lib/khaiwalDb";
 import {
   sendLoginNotification,
   getClientDetails,
@@ -10,12 +12,21 @@ export async function POST(request) {
     const { username, password } = await request.json();
     const clientDetails = getClientDetails(request);
 
-    // Check credentials
-    const validUsername = process.env.NEXT_PUBLIC_ADMIN_USERNAME || "8570088978";
-    const validPassword =
-      process.env.NEXT_PUBLIC_ADMIN_PASSWORD || process.env.ADMIN_PASSWORD || "GlTsSd@EagleEyes8570@";
+    const connection = await connectKhaiwalDB();
+    const admin = await connection.db.collection("admin_users").findOne({
+      loginId: String(username || "").trim(),
+      active: true,
+    });
 
-    if (username !== validUsername || password !== validPassword) {
+    let passwordMatches = false;
+    if (admin?.passwordHash && admin?.passwordSalt && password) {
+      const storedHash = Buffer.from(admin.passwordHash, "hex");
+      const enteredHash = scryptSync(String(password), admin.passwordSalt, storedHash.length);
+      passwordMatches = storedHash.length === enteredHash.length &&
+        timingSafeEqual(storedHash, enteredHash);
+    }
+
+    if (!admin || !passwordMatches) {
       // Send failed login notification
       sendLoginNotification({
         success: false,
@@ -29,11 +40,11 @@ export async function POST(request) {
     }
 
     // Generate token
-    const token = Buffer.from(`${username}:${Date.now()}`).toString("base64");
+    const token = Buffer.from(`${admin.loginId}:${Date.now()}`).toString("base64");
 
     const user = {
       id: 1,
-      username,
+      username: admin.loginId,
       role: "admin",
       loginTime: new Date().toISOString(),
     };

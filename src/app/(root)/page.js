@@ -6,7 +6,7 @@ import {
   getMonthlyResultsFromDB,
   getDisawarDataFromDB,
 } from "@/services/resultServer";
-import { getSettingsFromDB, buildSiteConfig } from "@/services/settingsServer";
+import { getSettingsFromDB, getKhaiwalFromDB, buildSiteConfig } from "@/services/settingsServer";
 
 export const metadata = {
   title: "Daily Satta Kings – Today Satta Result, Satta King Chart & A7 Satta Updates",
@@ -27,6 +27,7 @@ export default async function Home() {
     lastResult,
     disawarData,
     settings,
+    khaiwal,
     monthlyResults,
   ] =
     await Promise.all([
@@ -35,13 +36,14 @@ export default async function Home() {
       getLastResultFromDB(),
       getDisawarDataFromDB(),
       getSettingsFromDB(),
+      getKhaiwalFromDB(),
       getMonthlyResultsFromDB(
         currentDate.getMonth() + 1,
         currentDate.getFullYear()
       ),
     ]);
 
-  const siteConfig = buildSiteConfig(settings);
+  const siteConfig = buildSiteConfig(settings, khaiwal);
 
   return (
     <SattaDashboard
